@@ -1,0 +1,112 @@
+
+/* body { */
+    /* overflow: hidden; */
+/* } */
+
+#login-modal, #register-modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: #e6ecf0;
+    padding: 40px;
+    border-radius: 10px;
+    width: 450px;
+    text-align: center;
+}
+
+.top-form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.top-form .close-modal {
+    cursor: pointer;
+    padding: 0 20px;
+    font-size: 20px;
+}
+
+.login-form, h2 {
+    letter-spacing: 2px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.register-form, h2 {
+    letter-spacing: 2px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.login-form form input {
+    width: 75%;
+    margin-bottom: 20px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #d0d5d8;
+    border-radius: 3px;
+}
+
+.login-form button {
+    padding: 12px 0;
+    width: 75%;
+    background: #5dca88;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+
+
+
+#user_not_found_snackbar {
+    visibility: hidden;
+    min-width: 250px;
+    margin-left: -220px;
+    background-color: red;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 16px;
+    position: fixed;
+    z-index: 100;
+    left:50%;
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#user_not_found_snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}

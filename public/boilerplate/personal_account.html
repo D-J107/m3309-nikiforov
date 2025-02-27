@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Личный кабинет">
+    <meta name="keywords" content="личный кабинет, магазин рыбы">
+    <link rel="stylesheet" href="../outlines.css">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Личный кабинет - Фиш Маркет</title>
+    <script src="../scripts/loginRegister.js" defer></script>
+    <script src="../scripts/loading.js" defer></script>
+    <script src="../scripts/highlightMenu.js" defer></script>
+    <script src="../scripts/composeMenu.js" defer></script>
+</head>
+<body>
+    <header>
+        <div class="main">
+            <h1 class="Title">Фиш Маркет</h1>
+        </div>
+    </header>
+    <main>
+        <nav class="nav">
+            <ul class="visible-menu">
+              <li><a href="../index.html">Каталог</a></li>
+              <li><a href='personal_account.html'>Личный кабинет</a></li>
+              <li><a href='payment.html'>Оплата</a></li>
+              <li><a href='delivery.html'>Доставка</a></li>
+              <li><a href='contacts.html'>Контакты</a></li>
+              <li><a href='vacancy.html'>Вакансии</a></li>
+              <li><a href='reviews.html'>Отзывы</a></li>
+              <li><a href='business_partners.html'>Для бизнес партнеров</a></li>
+              <li><a href='../todo/index.html'>Список дел</a></li>
+            </ul>
+            <button class="burger hidden">
+                <svg width="30" height="40">
+                    <circle cx="15" cy="10" r="2" fill="#fff"></circle>
+                    <circle cx="15" cy="20" r="2" fill="#fff"></circle>
+                    <circle cx="15" cy="30" r="2" fill="#fff"></circle>
+                </svg>
+                <div class="burger-count"></div>
+            </button>
+            <ul class="hidden-menu"></ul>
+          </nav>
+        <h1>Личный кабинет</h1>
+        <p>Здесь вы можете управлять своими заказами, настройками и личной информацией.</p>
+        <br> 
+        <!-- <p>Для работы в личном кабинете нужно авторизоваться.</p> -->
+         <br>
+         <br>
+        <div class="div-login-register">
+            <button id = "login-show">Авторизация</button>
+            <div id="login-modal">
+                <div class="modal">
+                    <div class="top-form">
+                    </div>
+                    <div class="login-form">
+                        <h2>Введите вашу почту и пароль.</h2>
+                        <form action="">
+                            <input type="text" class="form-control" placeholder="почта" id="log-mail-input">
+                            <input type="password" class="form-control" placeholder="пароль" id="log-pwd-input">
+                            <button type="button" class="submit-btn" id="login-btn">Авторизоваться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <button id="register-show">Регистрация</button>
+            <div id="register-modal">
+                <div class="modal">
+                    <div class="top-form">
+                    </div>
+                    <div class="register-form">
+                        <h2>Введите название, текст и идентификатор</h2>
+                        <form action="">
+                            <input type="text" class="form-control" placeholder="название" id="reg-title-input">
+                            <input type="text" class="form-control" placeholder="содержимое" id="reg-content-input">
+                            <input type="password" class="form-control" placeholder="id пользователя" id="reg-id-input">
+                            <button type="button" class="submit-btn" id="reg-btn">Зарегистрироваться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="user_not_found_snackbar">Ошибка: аккаунт с таким паролем и почтой не найден.</div>
+        
+    </main>
+    <footer class="footer">
+        <p>Телефон: +123456789</p>
+        <p>Email: mail@mail.ru</p>
+    </footer>
+</body>
+</html>
