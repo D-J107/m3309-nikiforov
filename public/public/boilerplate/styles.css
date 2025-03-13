@@ -1,0 +1,188 @@
+
+#login-modal, #register-modal {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 100;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+
+#login-modal.show, #register-modal.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+#login-modal.hide, #register-modal.hide {
+    opacity: 0;
+    visibility: hidden;
+}
+
+
+.modal {
+    background: #e6ecf0;
+    padding: 40px;
+    border-radius: 10px;
+    width: 450px;
+    text-align: center;
+}
+
+.top-form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.top-form .close-modal {
+    cursor: pointer;
+    padding: 0 20px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #555;
+    transition: color 0.3s;
+}
+
+.close-modal:hover {
+    color: red;
+}
+
+.login-form, h2 {
+    letter-spacing: 2px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.register-form, h2 {
+    letter-spacing: 2px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.login-form form input {
+    width: 75%;
+    margin-bottom: 20px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #d0d5d8;
+    border-radius: 3px;
+}
+
+.register-form form input {
+    width: 75%;
+    margin-bottom: 20px;
+    padding: 12px;
+    box-sizing: border-box;
+    border: 1px solid #d0d5d8;
+    border-radius: 3px;
+}
+
+.login-form button {
+    padding: 12px 0;
+    width: 75%;
+    background: #5dca88;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+.register-form button { 
+    padding: 12px 0;
+    width: 75%;
+    background: #5dca88;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    margin: 10px auto;
+    cursor: pointer;
+}
+
+
+
+#snackbar {
+    visibility: hidden;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 16px;
+    position: absolute;
+    z-index: 100;
+    left:50%;
+    transform: translate(-50%, -50%);
+    bottom: 30px;
+    font-size: 17px;
+}
+
+#snackbar.bad {
+    background-color: red;
+}
+
+#snackbar.good {
+    background-color: #5dca88;;
+}
+
+#snackbar.show {
+    visibility: visible;
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+}
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 1;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+
+.div-login-register {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    background: #099d91;
+    padding: 10px;
+    align-items: center;
+    display: flex;
+}
+
+#login-show, #register-show {
+    padding: 8px 12px;
+    background: hsl(183, 37%, 60%);
+    cursor: pointer;
+}
+
+#user-message, #logout-btn {
+    display: none;
+}
+
+#user-message.show, #logout-btn.show {
+    opacity: 1;
+    visibility: visible;
+    padding: 10px;
+    cursor: pointer;
+}
+
+#user-message.hide, #logout-btn.hide {
+    opacity: 0;
+    visibility: hidden;
+}
