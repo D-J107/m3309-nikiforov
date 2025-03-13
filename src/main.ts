@@ -39,9 +39,20 @@ async function bootstrap() {
     hbs.registerPartial(partialName, partialContent);
   })
 
-  const configService = app.get(ConfigService);
-  const port = configService.get<number>('PORT') || 3000;
+  // const configService = app.get(ConfigService);
+  // const port = configService.get<number>('PORT') || 3000;
+  const port = process.env.PORT || 3000;
   await app.listen(port);
-  console.log(`Application is running on port ${port}`)
+  console.log(`Application is running on port ${port}`);
 }
 bootstrap();
+
+
+// ВАЖНО
+// Рендер пытается найти представления views/ в папке dist
+// поэтому нужно в момент build'a рендера скопировать файлы из 
+// views/ в dist/
+// это делается такой командой в билде Рендера:
+// npm install && npm run build && cp -r views dist/
+// ну или можно заменить build в package.json'e на такой:
+// "build": "nest build && cp -r views dist/", 
