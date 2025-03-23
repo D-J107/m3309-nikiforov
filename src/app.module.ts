@@ -18,7 +18,6 @@ import { join } from 'path';
     UsersModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'public'),
-      serveRoot: '/', // позволит обращаться к файлам напрямую
     })
   ],
   controllers: [AppController, UsersController],

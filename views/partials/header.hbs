@@ -1,14 +1,45 @@
 <header>
     <div class="main">
         <h1 class="Title">Фиш Маркет</h1>
+
         <div class="div-login-register">
-            {{#if username}}
-                <span id="user-message">Вы вошли в систему как {{username}}</span>
-                <button id="logout-btn">Выйти</button>
-            {{else}}
-                <button id="login-show">Логин</button>
-                <button id="register-show">Регистрация</button>
-            {{/if}}
+            <button id = "login-show">Логин</button>
+            <div id="login-modal">
+                <div class="modal">
+                    <div class="top-form">
+                        <span class="close-modal" id="close-login">&times;</span>
+                    </div>
+                    <div class="login-form">
+                        <h2>Введите электронную почту и пароль.</h2>
+                        <form action="">
+                            <input type="text" class="form-control" placeholder="электронная почта" id="log-email-input">
+                            <input type="password" class="form-control" placeholder="пароль" id="log-pwd-input">
+                            <button type="button" class="submit-btn" id="login-btn">Залогиниться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <button id="register-show">Регистрация</button>
+            <div id="register-modal">
+                <div class="modal">
+                    <div class="top-form">
+                        <span class="close-modal" id="close-register">&times;</span>
+                    </div>
+                    <div class="register-form">
+                        <h2>Введите имя пользователя, пароль и адрес электронной почты</h2>
+                        <form action="">
+                            <input type="text" class="form-control" placeholder="имя" id="reg-username-input">
+                            <input type="password" class="form-control" placeholder="пароль" id="reg-password-input">
+                            <input type="text" class="form-control" placeholder="почта" id="reg-email-input">
+                            <button type="button" class="submit-btn" id="reg-btn">Зарегистрироваться</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <span id="user-message">Вы вошли в систему как {username}</span>
+            <button id="logout-btn">Выйти из аккаунта</button>
         </div>
+        <div id="snackbar">text loading...</div>
+        
     </div>
 </header>

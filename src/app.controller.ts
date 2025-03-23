@@ -1,55 +1,51 @@
-import { Controller, Get, Render, Req } from '@nestjs/common';
+import { Controller, Get, Render, Req, Res } from '@nestjs/common';
 import { SessionRequest } from './types/sessionRequest';
+import { AppService } from './app.service';
+import { Response } from 'express';
 
 
 @Controller()
 export class AppController {
+  constructor(private appService: AppService) {}
 
-  @Get('/')
-  @Render('index')
-  home(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null }; 
-  }
+  @Get()
+  @Render('catalogue')
+  root() {}
+
+  @Get('/catalogue')
+  @Render('catalogue')
+  catalogue() {}
 
   @Get('/personal_account')
   @Render('personal_account')
-  personalAccount(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
-
-  @Get('/business_partners')
-  @Render('business_partners')
-  businessPartners(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
-
-  @Get('/contacts')
-  @Render('contacts')
-  contacts(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
-
-  @Get('/delivery')
-  @Render('delivery')
-  delivery(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
+  personal_account() {}
 
   @Get('/payment')
   @Render('payment')
-  payment(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
+  payment() {}
 
-  @Get('/reviews')
-  @Render('reviews')
-  reviews(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
+  @Get('/delivery')
+  @Render('delivery')
+  delivery() {}
+
+  @Get('/contacts')
+  @Render('contacts')
+  contacts() {}
 
   @Get('/vacancy')
   @Render('vacancy')
-  vacancy(@Req() req: SessionRequest) {
-    return { username: req.session.user ? req.session.user.username : null };
-  }
+  vacancy() {}
+
+  @Get('/reviews')
+  @Render('reviews')
+  reviews() {}
+
+  @Get('/business_partners')
+  @Render('business_partners')
+  business_partners() {}
+
+  @Get('/todo')
+  @Render('todo')
+  todo_list() {}
+
 }
