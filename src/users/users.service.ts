@@ -1,42 +1,136 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { User } from './users.model';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { CreateUserDto } from './dto/create-user.dto';
+import { OnModuleInit } from '@nestjs/common';
+import { RolesService } from 'src/roles/roles.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcryptjs';
+import { MissingEnvironmentVariableError } from 'src/customTypes/environmentError';
 
-type User = {
-    username: string;
-    password: string;
-    email: string;
-};
 
 @Injectable()
-export class UsersService {
-    private users: User[] = [];
+export class UsersService implements OnModuleInit {
+    constructor(
+        @InjectRepository(User) private usersRepository: Repository<User>,
+        private readonly rolesService: RolesService)
+    {}
 
-    registerUser(userData: {username: string; password: string; email: string}) {
-        const {username, password, email} = userData;
-        const existingUser = this.users.find(user => user.email === email);
 
-        if (existingUser) {
-            return {statusCode: 419, message: "User account already registered!"};
-        }
 
-        this.users.push({username, password, email});
-        
-        return {statusCode: 201, message: "User registered successfully!"};
+    async createUser(dto: CreateUserDto) {
+        let userRole = await this.rolesService.ensureRoleExists("USER", "Обычный пользователь");
+        const USER_TEST_BALANCE = 3000;
+        let newUser = this.usersRepository.create({
+            ...dto,
+            balance: USER_TEST_BALANCE,
+            roles: [userRole]
+        });
+        newUser = await this.usersRepository.save(newUser);
+        return newUser;
     }
 
-    loginUser(loginData: {email: string; password: string}) {
-        const {email, password} = loginData;
-        const user = this.users.find(user => user.email === email && user.password === password);
-        
+    async getAllUsers() {
+        const users = await this.usersRepository.find();
+        return users;
+    }
+
+    async getUserById(id: number) {
+        return await this.usersRepository.findOne({
+            where: {id: id},
+            relations: ['roles'],
+        });
+    }
+
+    async getUserByEmail(email: string) {
+        return this.usersRepository.findOne({
+            where: {email: email},
+            relations: ["roles"],
+        });
+    }
+
+    async updateUser(id: number, dto: UpdateUserDto) {
+        const user = await this.usersRepository.findOneBy({id});
         if (!user) {
-            return {statusCode: 401, message: "User account does not exist!"};
+            throw new NotFoundException(`Пользователь с айди ${id} не найден!`);
+        }
+        await this.usersRepository.update(id, {
+            username: (dto.username || user.username),
+            email: dto.email,
+            password: dto.password, 
+            balance: user.balance + (dto.deposit || 0)
+        });
+        return await this.usersRepository.findOneBy({id});
+    }
+
+    async addRoleToUser(id: number, value: string) {
+        const user = await this.usersRepository.findOne({
+            where: {id},
+            relations: ["roles"],
+        });
+        if (!user) {
+            throw new NotFoundException(`Пользователь с айди ${id} не найден!`);
+        }
+        const role = await this.rolesService.getByValue(value);
+        if (!role) {
+            throw new NotFoundException(`Роль с значением ${value} не найдена!`);
         }
 
-        return {
-            statusCode: 201,
-            message: "Login successfull!",
-            user: {
-                username: user.username,
-                email: user.email
-            }};
+        if (user.roles.some(r => r.id === role.id)) {
+            throw new BadRequestException(`Пользователь ${id} уже имеет роль "${value}"!`);
+        }
+
+        user.roles.push(role);
+        await this.usersRepository.save(user);
+
+        return user;
+    }
+
+    async deleteByEmail(email: string) {
+        const user = await this.usersRepository.findOne({
+            where: {email},
+            relations: ["roles"],
+        });
+        if (!user) {
+            throw new NotFoundException(`Пользователь с таким email ${email} не найден!`);
+        }
+
+        // удаляем отношение в промежуточной таблице user_roles
+        await this.usersRepository
+            .createQueryBuilder()
+            .relation(User, "roles")
+            .of(user)
+            .remove(user.roles);
+
+        await this.usersRepository.delete({email});
+    }
+
+
+
+
+
+
+    async onModuleInit() {
+        const existingAdmin = await this.usersRepository.findOneBy({
+            username: process.env.ADMIN_NAME
+        });
+        if (!existingAdmin) {
+            let adminRole = await this.rolesService.ensureRoleExists("ADMIN", "Администратор");
+
+            if (!process.env.ADMIN_PWD) {
+                throw new MissingEnvironmentVariableError('ADMIN_PWD');
+            }
+            const usualPassword: string = process.env.ADMIN_PWD;
+            const encryptedPassword = await bcrypt.hash(usualPassword, 7)
+            const adminUser = this.usersRepository.create({
+                username: process.env.ADMIN_NAME,
+                password: encryptedPassword,
+                email: process.env.ADMIN_MAIL,
+                roles: [adminRole]
+            });
+
+            await this.usersRepository.save(adminUser);
+        }
     }
 }

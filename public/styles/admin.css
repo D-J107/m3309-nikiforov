@@ -1,0 +1,48 @@
+.admin-menu {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.menu-button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu-button:hover {
+    background-color: #0056b3;
+}
+
+.admin-form {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+}
+
+.admin-form label {
+    margin-top: 10px;
+}
+
+.admin-form input, .admin-form button {
+    margin-top: 5px;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.hidden {
+    display: none;
+}
+
+#productList {
+    list-style: none;
+    padding: 0;
+}

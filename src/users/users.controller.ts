@@ -1,52 +1,97 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Render, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Request, Response } from 'express';
-import { SessionRequest } from 'src/types/sessionRequest';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { User } from './users.model';
+import { CreateUserDto } from './dto/create-user.dto';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/roles.guard';
+import { Roles } from 'src/auth/roles-auth.decorator';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { Request } from 'express';
+import { UserJwtPayload } from 'src/customTypes/userJwtPayload';
 
+@ApiTags('Пользователи')
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Post('register') 
-    register(@Body() userData: {username: string; password: string; email: string}) {
-        const result = this.usersService.registerUser(userData);
-        if (result.statusCode === 201) {
-            return result;
-        } else if (result.statusCode === 419) {
-            throw new HttpException(result.message, HttpStatus.CONFLICT);
-        } else {
-            throw new HttpException("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @ApiOperation({summary: 'Создание пользователя'})
+    @ApiResponse({status: 201, type: User})
+    @UseGuards(JwtAuthGuard)
+    @Post('/create') 
+    async create(@Body() userDto: CreateUserDto) {
+        return await this.usersService.createUser(userDto);
     }
 
-    @Post('login')
-    login(@Body() loginData: {email: string; password: string},
-            @Req() req: SessionRequest) {
-
-        const result = this.usersService.loginUser(loginData);
-        if (result.statusCode === 201) {
-            req.session.user = result.user; // сохраняем юзера в сессии
-            return {success: true, user: result.user};
-        } else if (result.statusCode === 401) {
-            throw new HttpException(result.message, HttpStatus.UNAUTHORIZED);
-        } else {
-            throw new HttpException("Internal Server Error", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }  
-
-    @Post('logout')
-    logout(@Req() req: SessionRequest, @Res() res: Response) {
-        req.session.destroy(() => {
-            res.json({ success: true });
-        });
+    @ApiOperation({summary: 'Получение всех пользователей'})
+    @ApiResponse({status: 200, type: [User]})
+    @Roles("ADMIN")
+    @UseGuards(RolesGuard)
+    @Get('/get')
+    async getAll() {
+        return await this.usersService.getAllUsers();
     }
 
-    @Post('check-session')
-    checkSession(@Req() req: SessionRequest) {
-        if (req.session.user) {
-            return { isLoggedIn: true, user: req.session.user };
-        } else {
-            return { isLoggedIn: false };
-        }
+    @ApiOperation({summary: 'Получение пользователя(по айди)'})
+    @ApiResponse({status: 200, type: User})
+    @UseGuards(JwtAuthGuard)
+    @Get('/get/id/:id') 
+    async getById(@Param('id') id: number) {
+        return await this.usersService.getUserById(id);
     }
+
+    @ApiOperation({summary: 'Получение пользователя(по email)'})
+    @ApiResponse({status: 200, type: User})
+    @UseGuards(JwtAuthGuard)
+    @Get('/get/:email') 
+    async getByEmail(@Param('email') email: string) {
+        return await this.usersService.getUserByEmail(email);
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Get('/me')
+    getProfile(@Req() req: Request) {
+        const user = req.user as UserJwtPayload;
+        return {
+            id: user.id,
+            email: user.email,
+            username: user.username, // if available
+            balance: user.balance,   // if available
+            roles: user.roles,
+        };
+    }
+
+    @ApiOperation({summary: 'Изменение пользователя'})
+    @ApiResponse({status: 200, type: User})
+    @UseGuards(JwtAuthGuard)
+    @Put('/update/:id') 
+    async update(@Param('id') id : number, @Body() dto: UpdateUserDto) {
+        return await this.usersService.updateUser(id, dto);
+    }
+
+    @ApiOperation({summary: 'Добавление новой роли к пользователю'})
+    @ApiResponse({status: 200, type: User})
+    @UseGuards(JwtAuthGuard)
+    @Put('/add-role') 
+    async addRole(
+                @Body('id') id: number,
+                @Body('value') value: string
+    ) {
+        return await this.usersService.addRoleToUser(id, value);
+    }
+
+    @ApiOperation({summary: 'Удаление пользователя(по email)'})
+    @ApiResponse({status: 200, description: 'Пользователь удалён'})
+    @UseGuards(JwtAuthGuard)
+    @Delete('/delete/:email')
+    async delete(@Param('email') email: string) {
+        return await this.usersService.deleteByEmail(email);
+    }
+
+    
+
+    
+
+    
+
 }

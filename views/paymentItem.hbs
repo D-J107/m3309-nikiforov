@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="description" content="магазин рыбы">
+  <meta name="keywords" content="онлайн магазин рыбы">
+  <title>Оплата товара</title>
+  <link rel="stylesheet" href="/styles/outlines.css">
+  <link rel="stylesheet" href="/styles/menu.css">
+  <link rel="stylesheet" href="/toastr/toastr.min.css">
+  <link rel="stylesheet" href="/toastr/toastr.css">
+
+  <script src="/scripts/loading.js" defer></script>
+  <script src="/scripts/highlightMenu.js" defer></script>
+  <script src="/scripts/composeMenu.js" defer></script>
+  <script src="/scripts/loginRegister.js" defer></script>
+
+  <script>
+    window.currentUser = {{{json user}}}; // сериализуем юзера в глобальную переменную
+  </script>
+  <script src="/scripts/payment.js" defer></script>
+
+  <script src="/toastr/jquery.min.js" defer></script>
+  <script src="/toastr/toastr.min.js" defer></script>
+
+</head>
+<body>
+  {{> header }}
+  {{> menu }}
+
+  <main>
+    <h1>Оплата товара</h1>
+
+    <div class="product-info">
+      <img src="/webp-images/{{item.imagePath}}" alt="{{item.title}}" style="width:200px;">
+      <h2>{{item.title}}</h2>
+      <p>Цена: {{item.price}} руб/кг</p>
+      {{#if item.specialOffer}}
+        <p class="Sale">Акция: {{item.specialOffer}}</p>
+      {{/if}}
+      {{#if item.discount}}
+        <p class="Discount">Скидка: -{{item.discount}}%</p>
+      {{/if}}
+    </div>
+
+    <div class="password-form">
+      <h3>Для подтверждения операции введите ваш пароль:</h3>
+      <input type="password" id="password" placeholder="Пароль">
+      <button id="confirm-purchase" data-item-id="{{item.id}}">Подтвердить</button>
+    </div>
+  </main>
+</body>
+</html>

@@ -4,13 +4,20 @@
     <meta charset="UTF-8">
     <meta name="description" content="магазин рыбы">
     <meta name="keywords" content="онлайн магазин рыбы">
-    <link rel="stylesheet" href="outlines.css">
-    <link rel="stylesheet" href="boilerplate/styles.css">
+    <link rel="stylesheet" href="styles/outlines.css">
+    <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="toastr/toastr.min.css">
+    <link rel="stylesheet" href="toastr/toastr.css">
     <title>Фиш Маркет</title>
     <script src="scripts/loading.js" defer></script>
     <script src="scripts/highlightMenu.js" defer></script>
     <script src="scripts/composeMenu.js" defer></script>
     <script src="scripts/loginRegister.js" defer></script>
+    
+    <script src="toastr/jquery.min.js" defer></script>
+    <script src="toastr/toastr.min.js" defer></script>
+    <script src="scripts/event_handling.js" defer></script>
+    <script src="scripts/unauthorizedHandler.js" defer></script>
 </head>
 <body>
     {{> header }}
@@ -21,240 +28,32 @@
             <h1>Каталог</h1>
             <div class="product-list">
                 <ul class="flex-container">
-                    <!-- Каждый товар будет разделён на сайте на 3 части: -->
-                    <li class="product-item">
-                        <!-- 1 часть - фото и возможно надпись с скидкой или Распродажей -->
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Горбуша Дальневосточная замороженная без головы~800г.webp">
-                            <h4 class="Sale">Распродажа</h4>
-                            <h4 class="Discount">-17%</h4>
-                        </div>
-                        <!-- 2 часть название предмета -->
-                        <div class="product-title">
-                            <p class="product-text-description">Горбуша</p>
-                        </div>
-                        <!-- 3 часть цена и кнопка покупки -->
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">234 руб/кг
-                                <a href="ссылка_на_покупку_горбуши">
-                                    <img class="cart-images" src="images/cart.jpg">
-                                </a>
-                            </p>
-                      </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Кета Дальневосточная замороженная~1.5кг.webp">
-                            <h4 class="Discount">-12%</h4>
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Кета</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">5220 руб/кг
-                              <a href="ссылка_на_покупку_кеты">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Кета холодного копчения филе~400г.webp">
-                            <h4 class="Sale">Распродажа</h4>
-                            <h4 class="Discount">-17%</h4>
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Кета холодного копчения</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">234 руб/кг
-                              <a href="ссылка_на_покупку_кета_холодного_копчения">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Кижуч Дальневосточный замороженный~2.5кг.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Кижуч</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">5220 руб/кг
-                              <a href="ссылка_на_покупку_кижуча">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Лосось Дальневосточный хвостовая часть~300г.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Лосось</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">9999 руб/кг
-                              <a href="ссылка_на_покупку_Лосося">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Нерка Дальневосточная замороженная~1.2кг.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Нерка</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">2722 руб/кг
-                              <a href="ссылка_на_покупку_нерки">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Осетр стейк горячего копчения~250г.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Осетр</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">1940 руб/кг
-                              <a href="ссылка_на_покупку_осетра">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Сибас без головы замороженный~700г.webp">
-                            <h4 class="Sale">Распродажа</h4>
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Сибас</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">1818 руб/кг
-                              <a href="ссылка_на_покупку_сибаса">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Филе Дальневосточной нерки порционное~400г.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Филе нерки</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">3567 руб/кг
-                              <a href="ссылка_на_покупку_гречки">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Филе форели горячего копчения ФЕРМЕРСКАЯ~500г.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Филе форели</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">1577 руб/кг
-                              <a href="ссылка_на_покупку_филе_форели">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Форель горячего копчения ФЕРМЕРСКАЯ~600г.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Форель горячего копчения</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">1983 руб/кг
-                              <a href="ссылка_на_покупку_форели">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-
-                    <li class="product-item">
-                        <div class="product-image-wrap">
-                            <img src="webp-images/Щука суповой набор замороженный~1кг.webp">
-                        </div>
-                        <div class="product-title">
-                            <p class="product-text-description">Щука</p>
-                        </div>
-                        <div class="product-price-and-click-button">
-                            <p class="product-text-description">2515 руб/кг
-                              <a href="ссылка_на_покупку_щуки">
-                              <img class="cart-images" src="images/cart.jpg">
-                              </a>
-                            </p>
-                          </div>
-                    </li>
-                    <br>
-                    <br>
-                    <br>
-                    
+                    {{#each items}}
+                    {{#unless this.purchase}} <!-- показываем только те, у которых нет покупки -->
+                        <li class="product-item" data-title="{{this.title}}">
+                            <div class="product-image-wrap">
+                                <img src="webp-images/{{this.imagePath}}">
+                                {{#if this.specialOffer}}
+                                    <h4 class="Sale">{{this.specialOffer}}</h4>
+                                {{/if}}
+                                {{#if this.discount}}
+                                    <h4 class="Discount">-{{this.discount}}%</h4>
+                                {{/if}}
+                            </div>
+                            <div class="product-title">
+                                <p class="product-text-description">{{this.title}}</p>
+                            </div>
+                            <div class="product-price-and-click-button">
+                                <p class="product-text-description">{{this.price}} руб/кг
+                                    <a href="payment/{{this.id}}">
+                                        <img class="cart-images" src="images/cart.jpg">
+                                    </a>
+                                </p>
+                            </div>
+                        </li>
+                        <br><br><br>
+                    {{/unless}}
+                    {{/each}}
                 </ul>
             </div>
         </section>

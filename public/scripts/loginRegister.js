@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
 
     const API_BASE_URL = window.location.origin.includes("localhost")
@@ -29,12 +30,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
 
-
+    // logout logic
     logoutButton.addEventListener('click', async function () {
         try {
-            await fetch(`${API_BASE_URL}/users/logout`, {method: 'POST' });
+            // await fetch(`${API_BASE_URL}/users/logout`, {method: 'POST' });
+            await fetch(`${API_BASE_URL}/auth/logout`, {
+                method: 'POST',
+                credentials: 'include', // хз почему так но ГПТ пишет что важно
+            });
 
-            localStorage.removeItem("user");
+            localStorage.removeItem("username");
+            // localStorage.removeItem("token"); deprecated: replace with cookie remover
+            // Cookie.remove("token"); depr просто делаем запрос на Бэк 
             // прячу сообщение о том что пользователь вошел в систему
             userMessage.textContent = "";
             userMessage.style.display = "none";
@@ -49,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error("Error logging out", error);
         }
     });
+    // </logout>
 
     function hideLogRegButtonsAndShowAuthorized(username) {
         loginShowButton.style.display = "none";
@@ -85,7 +93,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function showSnackbar(message, goodOrBad) {
         var x = document.getElementById("snackbar");
         x.className = "show";
-        x.textContent = message;
+        // x.textContent = message;
+        x.innerHTML = message.replace(/\n/g, "<br>");
         x.classList.remove("bad");
         x.classList.remove("good");
         x.classList.add(goodOrBad);
@@ -121,23 +130,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/users/login`, {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
                     method: 'POST',
                     headers: {'Content-Type' : 'application/json'},
                     body: JSON.stringify({email, password})
                 })
 
                 const data = await response.json();
+                // console.log("loginRegister.js login data:",data);
+                // console.log("loginRegister.js login data.username:",data.username);
+                // console.log("loginRegister.js login JSON.stringify(data.username):",JSON.stringify(data.username));
 
-                if (response.status === 201) {
+                if (response.status === 200) {
                     handleSuccessfullAction(loginModal, "Successfully logged in.");
-                    hideLogRegButtonsAndShowAuthorized(data.user.username);
-                    localStorage.setItem("user", JSON.stringify(data.user));
-                } else if (response.status === 401) {
-                    showSnackbar("User account with such credentials does not exist!", "bad");
+                    hideLogRegButtonsAndShowAuthorized(data.username);
+                    localStorage.setItem("username", JSON.stringify(data.username));
                 } else {
-                    showSnackbar("Sorry, our service is currently ofline. Try again later.", "bad");
-                    console.log(response.status);
+                    let messageString = data.message;
+                    showSnackbar(messageString, "bad");
                 }
             } catch (error) {
                 showSnackbar("Network error, try again later.", "bad");
@@ -171,21 +181,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const response = await fetch(`${API_BASE_URL}/users/register`, {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({username, password, email})
                 });
+                const data = await response.json();
 
                 if (response.status === 201) {
                     handleSuccessfullAction(registerModal, "Successfully registered new account!");
                     hideLogRegButtonsAndShowAuthorized(username);
-                    localStorage.setItem("user", JSON.stringify(data.user)); // сохраняем сессию пользователя в локальное хранилище
-                } else if (response.status === 409) {
-                    console.log("Already registered!");
-                    showSnackbar("User account already registered!", "bad");
+                    localStorage.setItem("username", JSON.stringify(data.username));
                 } else {
-                    showSnackbar("Sorry, out service is currently offline. Try again later.", "bad");
+                    let messageString = data.message;
+                    showSnackbar(messageString, "bad");
                 }
             } catch (error) {
                 showSnackbar("Network error, try again later.", "bad");
@@ -196,23 +205,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function checkSession() {
-        const savedUser = localStorage.getItem("user");
+        const savedUsername = localStorage.getItem("username");
 
-        if (savedUser) {
-            const user = JSON.parse(savedUser);
-            hideLogRegButtonsAndShowAuthorized(user.username); 
-        } else { 
-            // иначе запрашиваем у сервера залогинен ли юзер
-            fetch(`${API_BASE_URL}/users/check-session`, {method: 'POST'})
-                .then(response => response.json())
-                .then(data => {
-                    if (data.isLoggenIn) {
-                        localStorage.setItem("user", JSON.stringify(data.user));
-                        hideLogRegButtonsAndShowAuthorized(data.user.username);
-                    }
-                })
-                .catch(error => console.error("Error checking session", error));
-        }
+        if (savedUsername) {
+            console.log("checkSession saved user", savedUsername)
+            const username = JSON.parse(savedUsername);
+            hideLogRegButtonsAndShowAuthorized(username); 
+        } 
     }
 
     checkSession(); // проверяем наличие сессии после загрузки страницы

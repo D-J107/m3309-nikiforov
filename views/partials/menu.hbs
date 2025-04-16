@@ -1,7 +1,7 @@
 <nav class="nav">
     <ul class="visible-menu">
-        <li><a href="catalogue">Каталог</a></li>
-        <li><a href='personal_account'>Личный кабинет</a></li>
+        <li><a href='catalogue'>Каталог</a></li>
+        <li><a href='personal_account' data-protected="true">Личный кабинет</a></li>
         <li><a href='payment'>Оплата</a></li>
         <li><a href='delivery'>Доставка</a></li>
         <li><a href='contacts'>Контакты</a></li>
@@ -9,6 +9,13 @@
         <li><a href='reviews'>Отзывы</a></li>
         <li><a href='business_partners'>Для бизнес партнеров</a></li>
         <li><a href='todo'>Список дел</a></li>
+        
+        {{#if user}}
+            {{#if (isAdmin user.roles)}}
+                <li><a href='administration' data-protected="true">Администрирование</a></li>
+            {{/if}}
+        {{/if}}
+
     </ul>
     <button class="burger hidden">
         <svg width="30" height="40">

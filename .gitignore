@@ -3,3 +3,6 @@ backups/**
 dist/**
 out/**
 **/*.Identifier
+diagrams/**
+.development.env
+.production.env

@@ -4,13 +4,19 @@
     <meta charset="UTF-8">
     <meta name="description" content="{{pageDescription}}">
     <meta name="keywords" content="{{pageKeywords}}">
-    <link rel="stylesheet" href="outlines.css">
-    <link rel="stylesheet" href="boilerplate/styles.css">
+    <link rel="stylesheet" href="styles/outlines.css">
+    <link rel="stylesheet" href="styles/menu.css">
+    <link rel="stylesheet" href="toastr/toastr.min.css">
+    <link rel="stylesheet" href="toastr/toastr.css">
     <title>{{pageTitle}}</title>
     <script src="scripts/loading.js" defer></script>
     <script src="scripts/highlightMenu.js" defer></script>
     <script src="scripts/composeMenu.js" defer></script>
     <script src="scripts/loginRegister.js" defer></script>
+
+    <script src="toastr/jquery.min.js" defer></script>
+    <script src="toastr/toastr.min.js" defer></script>
+    <script src="scripts/unauthorizedHandler.js" defer></script>
 </head>
 <body>
     {{> header }}
@@ -18,7 +24,7 @@
 
     <main>
         <h1>{{pageHeader}}</h1>
-        <p>{{pageContent}}</p>
+        <h1>{{pageContent}}</h1>
     </main>
 
     {{> footer }}

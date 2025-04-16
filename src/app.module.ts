@@ -1,26 +1,59 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
-import { UsersController } from './users/users.controller';
-import { UsersService } from './users/users.service';
-import {ServeStaticModule} from '@nestjs/serve-static';
-
-import { join } from 'path';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './users/users.model';
+import { RolesModule } from './roles/roles.module';
+import { Role } from './roles/roles.model';
+import { AuthModule } from './auth/auth.module';
+import { ItemsModule } from './items/items.module';
+import { AppController } from './app.controller';
+import { Item } from './items/items.model';
+import { PurchaseModule } from './purchase/purchase.module';
+import { Purchase } from './purchase/purchase.model';
+import { DatabaseModule } from './database/database.module';
+import { AppService } from './app.service';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { PostsModule } from './posts/posts.module';
+import { AuthorsModule } from './authors/authors.module';
+import { Post } from './posts/post.entity';
+import { Author } from './authors/author.entity';
 
 @Module({
+  controllers: [AppController],
+  providers: [AppService],
   imports: [
+    DatabaseModule,
     ConfigModule.forRoot({
-      envFilePath: '.env',
-      isGlobal: true,
+      envFilePath: `.${process.env.NODE_ENV}.env`
+    }),
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: process.env.POSTGRES_HOST,
+      port: Number(process.env.POSTGRES_PORT),
+      username: process.env.POSTGRES_USER,
+      password: process.env.POSTGRES_PASSWORD,
+      database: process.env.POSTGRES_DB,
+      ssl: true,
+      entities: [User, Role, Item, Purchase, Post, Author],
+      synchronize: false,
+      migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+      migrationsRun: true,
     }),
     UsersModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-    })
-  ],
-  controllers: [AppController, UsersController],
-  providers: [AppService, UsersService],
+    RolesModule,
+    AuthModule,
+    ItemsModule,
+    PurchaseModule,
+    DatabaseModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
+      autoSchemaFile: true,
+    }),
+    PostsModule,
+    AuthorsModule,
+  ]
 })
 export class AppModule {}

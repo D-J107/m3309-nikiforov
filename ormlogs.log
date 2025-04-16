@@ -1,0 +1,137 @@
+[2025-04-11T15:42:33.856Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-11T15:42:34.702Z][QUERY]: SELECT version();
+[2025-04-11T15:42:34.710Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-11T15:42:34.765Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-11T15:42:34.770Z]0 migrations are already loaded in the database.
+[2025-04-11T15:42:34.771Z]1 migrations were found in the source code.
+[2025-04-11T15:42:34.771Z]1 migrations are new migrations must be executed.
+[2025-04-11T15:42:34.772Z][QUERY]: START TRANSACTION
+[2025-04-11T15:42:34.774Z][QUERY]: CREATE TABLE "roles" ("id" SERIAL NOT NULL, "value" character varying NOT NULL, "description" character varying NOT NULL, CONSTRAINT "UQ_bb7d685810f5cba57e9ff6756fb" UNIQUE ("value"), CONSTRAINT "PK_c1433d71a4838793a49dcad46ab" PRIMARY KEY ("id"))
+[2025-04-11T15:42:34.825Z][QUERY]: CREATE TABLE "users" ("id" SERIAL NOT NULL, "username" character varying NOT NULL, "password" character varying NOT NULL, "email" character varying NOT NULL, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2025-04-11T15:42:34.835Z][QUERY]: CREATE TABLE "purchases" ("id" SERIAL NOT NULL, "purchaseDate" TIMESTAMP NOT NULL DEFAULT now(), "user_id" integer NOT NULL, CONSTRAINT "PK_1d55032f37a34c6eceacbbca6b8" PRIMARY KEY ("id"))
+[2025-04-11T15:42:34.843Z][QUERY]: CREATE TABLE "items" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "price" integer NOT NULL, "imagePath" character varying NOT NULL, "specialOffer" character varying, "discount" integer, "purchase_id" integer, CONSTRAINT "PK_ba5885359424c15ca6b9e79bcf6" PRIMARY KEY ("id"))
+[2025-04-11T15:42:34.851Z][QUERY]: CREATE TABLE "user_roles" ("user_id" integer NOT NULL, "role_id" integer NOT NULL, CONSTRAINT "PK_23ed6f04fe43066df08379fd034" PRIMARY KEY ("user_id", "role_id"))
+[2025-04-11T15:42:34.856Z][QUERY]: CREATE INDEX "IDX_87b8888186ca9769c960e92687" ON "user_roles" ("user_id") 
+[2025-04-11T15:42:34.860Z][QUERY]: CREATE INDEX "IDX_b23c65e50a758245a33ee35fda" ON "user_roles" ("role_id") 
+[2025-04-11T15:42:34.864Z][QUERY]: ALTER TABLE "purchases" ADD CONSTRAINT "FK_024ddf7e04177a07fcb9806a90a" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-11T15:42:34.875Z][QUERY]: ALTER TABLE "items" ADD CONSTRAINT "FK_e2209f147ec1ee1396c7ed854b2" FOREIGN KEY ("purchase_id") REFERENCES "purchases"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-11T15:42:34.879Z][QUERY]: ALTER TABLE "user_roles" ADD CONSTRAINT "FK_87b8888186ca9769c960e926870" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
+[2025-04-11T15:42:34.883Z][QUERY]: ALTER TABLE "user_roles" ADD CONSTRAINT "FK_b23c65e50a758245a33ee35fda1" FOREIGN KEY ("role_id") REFERENCES "roles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-11T15:42:34.891Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744385926022,"SchemaUpdate1744385926022"]
+[2025-04-11T15:42:34.898Z]Migration SchemaUpdate1744385926022 has been  executed successfully.
+[2025-04-11T15:42:34.899Z][QUERY]: COMMIT
+[2025-04-11T15:47:47.463Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-11T15:47:48.281Z][QUERY]: SELECT version();
+[2025-04-11T15:47:48.286Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-11T15:47:48.303Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-11T15:47:48.308Z]No migrations are pending
+[2025-04-11T15:48:14.782Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-11T15:48:15.512Z][QUERY]: SELECT version();
+[2025-04-11T15:48:15.516Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-11T15:48:15.530Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-11T15:48:15.534Z]No migrations are pending
+[2025-04-12T08:35:08.484Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-12T08:35:08.983Z][QUERY]: SELECT version();
+[2025-04-12T08:35:08.988Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-12T08:35:08.999Z][QUERY]: CREATE TABLE "migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_8c82d7f526340ab734260ea46be" PRIMARY KEY ("id"))
+[2025-04-12T08:35:09.036Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-12T08:35:09.039Z]0 migrations are already loaded in the database.
+[2025-04-12T08:35:09.039Z]1 migrations were found in the source code.
+[2025-04-12T08:35:09.039Z]1 migrations are new migrations must be executed.
+[2025-04-12T08:35:09.040Z][QUERY]: START TRANSACTION
+[2025-04-12T08:35:09.041Z][QUERY]: CREATE TABLE "roles" ("id" SERIAL NOT NULL, "value" character varying NOT NULL, "description" character varying NOT NULL, CONSTRAINT "UQ_bb7d685810f5cba57e9ff6756fb" UNIQUE ("value"), CONSTRAINT "PK_c1433d71a4838793a49dcad46ab" PRIMARY KEY ("id"))
+[2025-04-12T08:35:09.048Z][QUERY]: CREATE TABLE "users" ("id" SERIAL NOT NULL, "username" character varying NOT NULL, "password" character varying NOT NULL, "email" character varying NOT NULL, CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2025-04-12T08:35:09.055Z][QUERY]: CREATE TABLE "purchases" ("id" SERIAL NOT NULL, "purchaseDate" TIMESTAMP NOT NULL DEFAULT now(), "user_id" integer NOT NULL, CONSTRAINT "PK_1d55032f37a34c6eceacbbca6b8" PRIMARY KEY ("id"))
+[2025-04-12T08:35:09.060Z][QUERY]: CREATE TABLE "items" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "price" integer NOT NULL, "imagePath" character varying NOT NULL, "specialOffer" character varying, "discount" integer, "purchase_id" integer, CONSTRAINT "PK_ba5885359424c15ca6b9e79bcf6" PRIMARY KEY ("id"))
+[2025-04-12T08:35:09.066Z][QUERY]: CREATE TABLE "user_roles" ("user_id" integer NOT NULL, "role_id" integer NOT NULL, CONSTRAINT "PK_23ed6f04fe43066df08379fd034" PRIMARY KEY ("user_id", "role_id"))
+[2025-04-12T08:35:09.070Z][QUERY]: CREATE INDEX "IDX_87b8888186ca9769c960e92687" ON "user_roles" ("user_id") 
+[2025-04-12T08:35:09.073Z][QUERY]: CREATE INDEX "IDX_b23c65e50a758245a33ee35fda" ON "user_roles" ("role_id") 
+[2025-04-12T08:35:09.076Z][QUERY]: ALTER TABLE "purchases" ADD CONSTRAINT "FK_024ddf7e04177a07fcb9806a90a" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-12T08:35:09.083Z][QUERY]: ALTER TABLE "items" ADD CONSTRAINT "FK_e2209f147ec1ee1396c7ed854b2" FOREIGN KEY ("purchase_id") REFERENCES "purchases"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-12T08:35:09.086Z][QUERY]: ALTER TABLE "user_roles" ADD CONSTRAINT "FK_87b8888186ca9769c960e926870" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
+[2025-04-12T08:35:09.089Z][QUERY]: ALTER TABLE "user_roles" ADD CONSTRAINT "FK_b23c65e50a758245a33ee35fda1" FOREIGN KEY ("role_id") REFERENCES "roles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-12T08:35:09.094Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744446891210,"SchemaUpdate1744446891210"]
+[2025-04-12T08:35:09.096Z]Migration SchemaUpdate1744446891210 has been  executed successfully.
+[2025-04-12T08:35:09.097Z][QUERY]: COMMIT
+[2025-04-12T08:36:47.429Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-12T08:36:47.883Z][QUERY]: SELECT version();
+[2025-04-12T08:36:47.888Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-12T08:36:47.900Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-12T08:36:47.903Z]1 migrations are already loaded in the database.
+[2025-04-12T08:36:47.904Z]SchemaUpdate1744446891210 is the last executed migration. It was executed on Sat Apr 12 2025 11:34:51 GMT+0300 (Москва, стандартное время).
+[2025-04-12T08:36:47.905Z]Now reverting it...
+[2025-04-12T08:36:47.905Z][QUERY]: START TRANSACTION
+[2025-04-12T08:36:47.906Z][QUERY]: ALTER TABLE "user_roles" DROP CONSTRAINT "FK_b23c65e50a758245a33ee35fda1"
+[2025-04-12T08:36:47.909Z][QUERY]: ALTER TABLE "user_roles" DROP CONSTRAINT "FK_87b8888186ca9769c960e926870"
+[2025-04-12T08:36:47.910Z][QUERY]: ALTER TABLE "items" DROP CONSTRAINT "FK_e2209f147ec1ee1396c7ed854b2"
+[2025-04-12T08:36:47.911Z][QUERY]: ALTER TABLE "purchases" DROP CONSTRAINT "FK_024ddf7e04177a07fcb9806a90a"
+[2025-04-12T08:36:47.912Z][QUERY]: DROP INDEX "public"."IDX_b23c65e50a758245a33ee35fda"
+[2025-04-12T08:36:47.914Z][QUERY]: DROP INDEX "public"."IDX_87b8888186ca9769c960e92687"
+[2025-04-12T08:36:47.915Z][QUERY]: DROP TABLE "user_roles"
+[2025-04-12T08:36:47.916Z][QUERY]: DROP TABLE "items"
+[2025-04-12T08:36:47.917Z][QUERY]: DROP TABLE "purchases"
+[2025-04-12T08:36:47.918Z][QUERY]: DROP TABLE "users"
+[2025-04-12T08:36:47.920Z][QUERY]: DROP TABLE "roles"
+[2025-04-12T08:36:47.923Z][QUERY]: DELETE FROM "migrations" WHERE "timestamp" = $1 AND "name" = $2 -- PARAMETERS: [1744446891210,"SchemaUpdate1744446891210"]
+[2025-04-12T08:36:47.927Z]Migration SchemaUpdate1744446891210 has been  reverted successfully.
+[2025-04-12T08:36:47.928Z][QUERY]: COMMIT
+[2025-04-14T06:55:54.129Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-14T06:55:55.669Z][QUERY]: SELECT version();
+[2025-04-14T06:55:55.821Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-14T06:55:56.035Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-14T06:55:56.170Z]1 migrations are already loaded in the database.
+[2025-04-14T06:55:56.171Z]2 migrations were found in the source code.
+[2025-04-14T06:55:56.210Z]SchemaUpdate1744446891210 is the last executed migration. It was executed on Sat Apr 12 2025 11:34:51 GMT+0300 (Москва, стандартное время).
+[2025-04-14T06:55:56.210Z]1 migrations are new migrations must be executed.
+[2025-04-14T06:55:56.211Z][QUERY]: START TRANSACTION
+[2025-04-14T06:55:56.328Z][QUERY]: CREATE TABLE "authors" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_d2ed02fabd9b52847ccb85e6b88" PRIMARY KEY ("id"))
+[2025-04-14T06:55:56.562Z][QUERY]: CREATE TABLE "posts" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "content" character varying, "authorId" integer NOT NULL, CONSTRAINT "PK_2829ac61eff60fcec60d7274b9e" PRIMARY KEY ("id"))
+[2025-04-14T06:55:56.685Z][QUERY]: ALTER TABLE "posts" ADD CONSTRAINT "FK_c5a322ad12a7bf95460c958e80e" FOREIGN KEY ("authorId") REFERENCES "authors"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-14T06:55:56.822Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744613135773,"SchemaUpdate1744613135773"]
+[2025-04-14T06:55:56.943Z]Migration SchemaUpdate1744613135773 has been  executed successfully.
+[2025-04-14T06:55:56.944Z][QUERY]: COMMIT
+[2025-04-15T09:27:26.947Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-15T09:27:29.046Z][QUERY]: SELECT version();
+[2025-04-15T09:27:29.164Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-15T09:27:29.286Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-15T09:27:29.404Z]2 migrations are already loaded in the database.
+[2025-04-15T09:27:29.404Z]3 migrations were found in the source code.
+[2025-04-15T09:27:29.405Z]SchemaUpdate1744613135773 is the last executed migration. It was executed on Mon Apr 14 2025 09:45:35 GMT+0300 (Москва, стандартное время).
+[2025-04-15T09:27:29.405Z]1 migrations are new migrations must be executed.
+[2025-04-15T09:27:29.406Z][QUERY]: START TRANSACTION
+[2025-04-15T09:27:29.523Z][QUERY]: ALTER TABLE "users" ADD "balance" integer NOT NULL DEFAULT '3000'
+[2025-04-15T09:27:29.659Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744709180508,"SchemaUpdate1744709180508"]
+[2025-04-15T09:27:29.784Z]Migration SchemaUpdate1744709180508 has been  executed successfully.
+[2025-04-15T09:27:29.785Z][QUERY]: COMMIT
+[2025-04-16T10:04:03.387Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-16T10:04:06.389Z][QUERY]: SELECT version();
+[2025-04-16T10:04:06.619Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-16T10:04:06.827Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-16T10:04:07.031Z]3 migrations are already loaded in the database.
+[2025-04-16T10:04:07.032Z]4 migrations were found in the source code.
+[2025-04-16T10:04:07.033Z]SchemaUpdate1744709180508 is the last executed migration. It was executed on Tue Apr 15 2025 12:26:20 GMT+0300 (Москва, стандартное время).
+[2025-04-16T10:04:07.033Z]1 migrations are new migrations must be executed.
+[2025-04-16T10:04:07.034Z][QUERY]: START TRANSACTION
+[2025-04-16T10:04:07.175Z][QUERY]: ALTER TABLE "items" DROP CONSTRAINT "FK_e2209f147ec1ee1396c7ed854b2"
+[2025-04-16T10:04:07.312Z][QUERY]: ALTER TABLE "items" DROP COLUMN "purchase_id"
+[2025-04-16T10:04:07.448Z][QUERY]: ALTER TABLE "purchases" ADD "item_id" integer
+[2025-04-16T10:04:07.568Z][QUERY]: ALTER TABLE "purchases" ADD CONSTRAINT "UQ_1064c04bd5a56289865700b2403" UNIQUE ("item_id")
+[2025-04-16T10:04:07.708Z][QUERY]: ALTER TABLE "purchases" ADD CONSTRAINT "FK_1064c04bd5a56289865700b2403" FOREIGN KEY ("item_id") REFERENCES "items"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-16T10:04:07.963Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744797811335,"SchemaUpdate1744797811335"]
+[2025-04-16T10:04:08.101Z]Migration SchemaUpdate1744797811335 has been  executed successfully.
+[2025-04-16T10:04:08.103Z][QUERY]: COMMIT
+[2025-04-16T12:07:25.750Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-16T12:07:28.977Z][QUERY]: SELECT version();
+[2025-04-16T12:07:29.231Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-16T12:07:29.356Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-16T12:07:29.489Z]4 migrations are already loaded in the database.
+[2025-04-16T12:07:29.490Z]5 migrations were found in the source code.
+[2025-04-16T12:07:29.490Z]SchemaUpdate1744797811335 is the last executed migration. It was executed on Wed Apr 16 2025 13:03:31 GMT+0300 (Москва, стандартное время).
+[2025-04-16T12:07:29.491Z]1 migrations are new migrations must be executed.
+[2025-04-16T12:07:29.492Z][QUERY]: START TRANSACTION
+[2025-04-16T12:07:29.984Z][QUERY]: ALTER TABLE "items" ADD "purchase_id" integer
+[2025-04-16T12:07:30.104Z][QUERY]: ALTER TABLE "items" ADD CONSTRAINT "UQ_e2209f147ec1ee1396c7ed854b2" UNIQUE ("purchase_id")
+[2025-04-16T12:07:30.457Z][QUERY]: ALTER TABLE "items" ADD CONSTRAINT "FK_e2209f147ec1ee1396c7ed854b2" FOREIGN KEY ("purchase_id") REFERENCES "purchases"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-16T12:07:30.596Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744805212721,"SchemaUpdate1744805212721"]
+[2025-04-16T12:07:30.719Z]Migration SchemaUpdate1744805212721 has been  executed successfully.
+[2025-04-16T12:07:30.720Z][QUERY]: COMMIT

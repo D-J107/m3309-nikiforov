@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Администрирование магазина">
+    <meta name="keywords" content="администрирование магазины">
+    <link rel="stylesheet" href="styles/outlines.css">
+    <link rel="stylesheet" href="styles/menu.css"
+    <link rel="stylesheet" href="styles/admin.css">
+    <link rel="stylesheet" href="toastr/toastr.min.css">
+    <link rel="stylesheet" href="toastr/toastr.css">
+    <title>Администрирование магазина Фиш Маркет</title>
+    <script src="scripts/loading.js" defer></script>
+    <script src="scripts/highlightMenu.js" defer></script>
+    <script src="scripts/composeMenu.js" defer></script>
+    <script src="scripts/loginRegister.js" defer></script>
+
+    <script src="toastr/jquery.min.js" defer></script>
+    <script src="toastr/toastr.min.js" defer></script>
+    <script src="scripts/admin_panel.js" defer></script>
+</head>
+<body>
+    {{> header }}
+    {{> menu }}
+
+    <main>
+        <h1>Администрирование товаров</h1>
+        <p>Выберите нужное действие:</p>
+
+        <div class="admin-menu">
+            <button class="menu-button" data-form="addForm">Добавление товара</button>
+            <button class="menu-button" data-form="deleteForm">Удаление товара</button>
+            <button class="menu-button" data-form="updateForm">Изменение товара</button>
+            <button class="menu-button" data-form="getForm">Получение всех товаров</button>
+        </div>
+
+        <!-- Add Item Form -->
+        <form id="addForm" class="admin-form hidden">
+            <h2>Добавить товар</h2>
+            <label>Изображение (только .webp):</label>
+            <input type="file" id="addImage" accept="image/webp" required>
+            <label>Название:</label>
+            <input type="text" id="addTitle" required>
+            <label>Цена (целое число):</label>
+            <input type="number" id="addPrice" required>
+            <button type="button" onclick="uploadProduct()">Отправить</button>
+        </form>
+
+        <!-- Delete Item Form -->
+        <form id="deleteForm" class="admin-form hidden">
+            <h2>Удалить товар</h2>
+            <label>ID товара:</label>
+            <input type="text" id="deleteIdentifier" required placeholder="id или название">
+            <input type="text" id="deleteReason" required placeholder="причина удаления">
+            <button type="button" onclick="deleteProduct()">Отправить</button>
+        </form>
+
+        <!-- Update Item Form -->
+        <form id="updateForm" class="admin-form hidden">
+            <h2>Изменить товар</h2>
+            <label>ID товара:</label>
+            <input type="number" id="updateId" required>
+            <label>Новое название:</label>
+            <input type="text" id="updateTitle">
+            <label>Новая цена (целое число):</label>
+            <input type="number" id="updatePrice">
+            <label>Новое изображение (только .webp):</label>
+            <input type="file" id="updateImage" accept="image/webp">
+            <label>Новая спецпредложение:</label>
+            <input type="text" id="updateSpecialOffer">
+            <label>Новая скидка (%):</label>
+            <input type="number" id="updateDiscount">
+            <button type="button" onclick="updateProduct()">Отправить</button>
+        </form>
+
+        <!-- Get All Items Form -->
+        <form id="getForm" class="admin-form hidden">
+            <h2>Список товаров</h2>
+            <button type="button" onclick="getAllProducts()">Получить список</button>
+            <ul id="productList"></ul>
+        </form>
+    </main>
+
+    {{> footer }}
+</body>
+</html>

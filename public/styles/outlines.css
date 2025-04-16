@@ -120,12 +120,12 @@ ul {
 }
 
 @media screen and (max-width: 768px) {
-    .flex-container > li {
-        display: none; /* Hide elements that don't fit */
+    .footer-banner {
+        display: none; 
     }
 
-    .ad-banner {
-        display: none; /* Hide the banner on small screens */
+    #income-statements {
+        display: none;
     }
 }
 
@@ -156,15 +156,6 @@ ul {
     border-radius: 8px;
 }
 
-@media screen and (max-width: 768px) {
-    .flex-container > li {
-        display: none; /* li элементы не покажутся если не вписались */
-    }
-
-    .ad-banner {
-        display: none; /* баннер не покажется на телефонах*/
-    }
-}
 
 #income-statements {
     margin: 20px 0px; /*отступ от остальных элементов*/
@@ -202,16 +193,7 @@ ul {
     background-color: hwb(49 69% 2%);
 }
 
-@media screen and (max-width: 768px) {
-    .table-row.header {
-        display: none; /* Допустим что на телефонах пользователи
-        не захотят видеть хедер */
-    }
 
-    .table-row > div {
-        text-align: left;
-    }
-}
 
 .nav {
     position: relative;
