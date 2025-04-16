@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  const API_BASE_URL = window.location.origin.includes("localhost")
+        ? "http://localhost:3000"
+        : "https://m3309-nikiforov.onrender.com";
+
     const form = document.getElementById("deposit-form");
   
     if (!form) return;
@@ -14,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       try {
         // Step 1: Get current user via /me endpoint
-        const meRes = await fetch("/users/me");
+        const meRes = await fetch(`${API_BASE_URL}/users/me`);
   
         if (!meRes.ok) {
           toastr.error("Не удалось получить данные пользователя");
@@ -33,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
   
         // Step 3: Send update request with all required fields
-        const res = await fetch(`/users/update/${userId}`, {
+        const res = await fetch(`${API_BASE_URL}/users/update/${userId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json"

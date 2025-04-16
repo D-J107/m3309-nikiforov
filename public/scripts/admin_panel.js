@@ -1,5 +1,10 @@
 
 document.addEventListener("DOMContentLoaded", () => {
+
+    const API_BASE_URL = window.location.origin.includes("localhost")
+        ? "http://localhost:3000"
+        : "https://m3309-nikiforov.onrender.com";
+
     const buttons = document.querySelectorAll(".menu-button");
     const forms = document.querySelectorAll(".admin-form");
 
@@ -28,7 +33,7 @@ async function uploadProduct() {
     formData.append("title", titleInput.value);
     formData.append("price", priceInput.value);
 
-    const response = await fetch("http://localhost:3000/items/upload", { 
+    const response = await fetch(`${API_BASE_URL}/items/upload`, { 
         method: "POST",
         body: formData
     });
@@ -51,7 +56,7 @@ async function deleteProduct() {
 
     const isNumeric = (string) => /^[+-]?\d+(\.\d+)?$/.test(string)
     if (isNumeric(id)) {
-        response = await fetch(`http://localhost:3000/items/delete/${id}`, {
+        response = await fetch(`${API_BASE_URL}/items/delete/${id}`, {
              method: "DELETE",
              body: JSON.stringify({reason}),
              headers: {
@@ -60,7 +65,7 @@ async function deleteProduct() {
             });
     } else {
         const title = id;
-        response = await fetch(`http://localhost:3000/items/delete/title/${title}`, {
+        response = await fetch(`${API_BASE_URL}/items/delete/title/${title}`, {
             method: "DELETE",
             body: JSON.stringify({reason}),
             headers: {

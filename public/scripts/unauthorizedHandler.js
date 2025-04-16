@@ -1,4 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    const API_BASE_URL = window.location.origin.includes("localhost")
+        ? "http://localhost:3000"
+        : "https://m3309-nikiforov.onrender.com";
+
     const protectedLinks = document.querySelectorAll("a[data-protected='true']");
 
     protectedLinks.forEach(link => {
@@ -8,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const targetUrl = link.getAttribute("href");
 
             try {
-                const res = await fetch(targetUrl, {
+                const res = await fetch(`${API_BASE_URL}/${targetUrl}`, {
                     method: "GET",
                     headers: { "Accept": "text/html"}
                 });

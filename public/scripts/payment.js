@@ -1,4 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
+
+    const API_BASE_URL = window.location.origin.includes("localhost")
+        ? "http://localhost:3000"
+        : "https://m3309-nikiforov.onrender.com";
+
     const passwordInput = document.getElementById('password');
     const confirmBtn = document.getElementById('confirm-purchase');
 
@@ -15,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch('http://localhost:3000/auth/validate-password', {
+            const res = await fetch(`${API_BASE_URL}/auth/validate-password`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, password })
@@ -28,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            const purchaseResponse = await fetch('http://localhost:3000/purchases', {
+            const purchaseResponse = await fetch(`${API_BASE_URL}/purchases`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, itemId })

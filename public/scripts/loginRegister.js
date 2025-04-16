@@ -33,15 +33,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // logout logic
     logoutButton.addEventListener('click', async function () {
         try {
-            // await fetch(`${API_BASE_URL}/users/logout`, {method: 'POST' });
             await fetch(`${API_BASE_URL}/auth/logout`, {
                 method: 'POST',
                 credentials: 'include', // хз почему так но ГПТ пишет что важно
             });
 
             localStorage.removeItem("username");
-            // localStorage.removeItem("token"); deprecated: replace with cookie remover
-            // Cookie.remove("token"); depr просто делаем запрос на Бэк 
+            
             // прячу сообщение о том что пользователь вошел в систему
             userMessage.textContent = "";
             userMessage.style.display = "none";
