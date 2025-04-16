@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthorInput } from './dto/create-author.input';
-import { UpdateAuthorInput } from './dto/update-author.input';
+// import { CreateAuthorInput } from './dto/create-author.input';
+// import { UpdateAuthorInput } from './dto/update-author.input';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Author } from './author.entity';
 import { Repository } from 'typeorm';
@@ -11,10 +11,10 @@ export class AuthorsService {
     @InjectRepository(Author) private authorRepository: Repository<Author>) 
   {}
 
-  create(input: CreateAuthorInput): Promise<Author> {
-    const author = this.authorRepository.create(input);
-    return this.authorRepository.save(author);
-  }
+  // create(input: CreateAuthorInput): Promise<Author> {
+  //   const author = this.authorRepository.create(input);
+  //   return this.authorRepository.save(author);
+  // }
 
   findAll(): Promise<Author[]> {
     return this.authorRepository.find({ relations: ['posts'] });
@@ -27,10 +27,10 @@ export class AuthorsService {
     });
   }
 
-  async update(input: UpdateAuthorInput): Promise<Author | null> {
-    await this.authorRepository.update(input.id, input);
-    return this.findOne(input.id);
-  }
+  // async update(input: UpdateAuthorInput): Promise<Author | null> {
+  //   await this.authorRepository.update(input.id, input);
+  //   return this.findOne(input.id);
+  // }
 
   async remove(id: number): Promise<Boolean> {
     await this.authorRepository.delete(id);

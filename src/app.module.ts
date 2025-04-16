@@ -13,8 +13,6 @@ import { PurchaseModule } from './purchase/purchase.module';
 import { Purchase } from './purchase/purchase.model';
 import { DatabaseModule } from './database/database.module';
 import { AppService } from './app.service';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PostsModule } from './posts/posts.module';
 import { AuthorsModule } from './authors/authors.module';
 import { Post } from './posts/post.entity';

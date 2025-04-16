@@ -6,4 +6,3 @@ out/**
 diagrams/**
 .development.env
 .production.env
-ormlogs.log
