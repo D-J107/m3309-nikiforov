@@ -47,11 +47,11 @@ import { Author } from './authors/author.entity';
     ItemsModule,
     PurchaseModule,
     DatabaseModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
-      autoSchemaFile: true,
-    }),
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
+    //   autoSchemaFile: true,
+    // }),
     PostsModule,
     AuthorsModule,
   ]
