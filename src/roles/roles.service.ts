@@ -1,4 +1,4 @@
-import { HttpStatus, Injectable, NotFoundException } from '@nestjs/common';
+import {  Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from './roles.model';
@@ -70,7 +70,7 @@ export class RolesService implements OnModuleInit {
     }
 
     async ensureRoleExists(value: string, description: string): Promise<Role> {
-        this.roleRepository
+        await this.roleRepository
             .createQueryBuilder()
             .insert()
             .into(Role)

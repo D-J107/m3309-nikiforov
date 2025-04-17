@@ -32,7 +32,7 @@
                     {{#unless this.purchase}} <!-- показываем только те, у которых нет покупки -->
                         <li class="product-item" data-title="{{this.title}}">
                             <div class="product-image-wrap">
-                                <img src="webp-images/{{this.imagePath}}">
+                                <img src={{this.imagePath}}>
                                 {{#if this.specialOffer}}
                                     <h4 class="Sale">{{this.specialOffer}}</h4>
                                 {{/if}}

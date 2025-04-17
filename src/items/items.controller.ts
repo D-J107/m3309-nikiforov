@@ -80,7 +80,6 @@ export class ItemsController {
             @Param('id') id: number,
             @Body() dto: UpdateItemDto
         ) {
-        // console.log("ItemsController update dto:", dto)
         let {newItem, previousTitle} = await this.itemsService.updateItem(id, dto, newFile);
         this.itemUpdates.next({data: {type: "updated", item: newItem, previousTitle: previousTitle}});
         return newItem;

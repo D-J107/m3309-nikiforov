@@ -1,9 +1,11 @@
+const API_BASE_URL = window.location.origin.includes("localhost")
+        ? "http://localhost:3000"
+        : "https://m3309-nikiforov.onrender.com";
+
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    const API_BASE_URL = window.location.origin.includes("localhost")
-        ? "http://localhost:3000"
-        : "https://m3309-nikiforov.onrender.com";
+    
 
     const buttons = document.querySelectorAll(".menu-button");
     const forms = document.querySelectorAll(".admin-form");

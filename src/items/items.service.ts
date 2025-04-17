@@ -19,8 +19,9 @@ export class ItemsService implements OnModuleInit{
         if (!file) {
             throw new BadRequestException('Файл не загружен!');
         }
-        const uniqueName = `${path.parse(file.originalname).name}.${Date.now()}${path.extname(file.originalname)}`;
-        const result = await this.cloudinaryService.uploadImageBuffer(file.buffer, uniqueName);
+        // const uniqueName = `${path.parse(file.originalname).name}.${Date.now()}${path.extname(file.originalname)}`;
+        console.log("items.service.ts saveFile file.originalname:", file.originalname);
+        const result = await this.cloudinaryService.uploadImageBuffer(file.buffer, file.originalname);
         return result.secure_url;
     }
 
@@ -217,10 +218,20 @@ export class ItemsService implements OnModuleInit{
             }
         ];
 
-        for (const item of predefinedItems) {
+        for (let item of predefinedItems) {
             const exists = await this.itemRepository.findOneBy({ title: item.title });
             if (!exists) {
-
+                // также нужно сначала сохранить изображение на удаленную БДшку
+                const localFilePath = path.join(__dirname, "..", "..", "public", "basic-webp-images", item.imagePath);
+                try {
+                    const buffer = fs.readFileSync(localFilePath);
+                    const localFilePathWithoutExtension = path.parse(localFilePath).name;
+                    const cloudinaryResult  = await this.cloudinaryService.uploadImageBuffer(buffer, localFilePathWithoutExtension);
+                    item.imagePath = cloudinaryResult.secure_url;
+                } catch(err) {
+                    console.log("❌ items.service.ts ensureBaseStuffExists err:", err);
+                    continue;
+                }
                 await this.itemRepository.save(item);
             }
         }
