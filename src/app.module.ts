@@ -37,7 +37,7 @@ import { Author } from './authors/author.entity';
       entities: [User, Role, Item, Purchase, Post, Author],
       synchronize: false,
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-      migrationsRun: true,
+      migrationsRun: false,
     }),
     UsersModule,
     RolesModule,
