@@ -51,7 +51,7 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
-      autoSchemaFile: true,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       // graphiql: true,
     }),
     PostsModule,
