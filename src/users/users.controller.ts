@@ -87,11 +87,4 @@ export class UsersController {
     async delete(@Param('email') email: string) {
         return await this.usersService.deleteByEmail(email);
     }
-
-    
-
-    
-
-    
-
 }

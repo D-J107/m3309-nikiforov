@@ -5,7 +5,10 @@ const API_BASE_URL = window.location.origin.includes("localhost")
 
 document.addEventListener("DOMContentLoaded", () => {
 
-    
+    document.getElementById("uploadButton")?.addEventListener("click", uploadProduct);
+    document.getElementById("deleteButton")?.addEventListener("click", deleteProduct);
+    document.getElementById("updateButton")?.addEventListener("click", updateProduct);
+    document.getElementById("getAllButton")?.addEventListener("click", getAllProducts);
 
     const buttons = document.querySelectorAll(".menu-button");
     const forms = document.querySelectorAll(".admin-form");
@@ -30,17 +33,28 @@ async function uploadProduct() {
         return;
     }
 
+    const title = titleInput.value;
+    const price = parseFloat(priceInput.value);
+
+    if (isNaN(price) || price <= 0) {
+        toastr.error("Цена должна быть положительным числом!");
+        return;
+    }
+
     const formData = new FormData();
     formData.append("image", fileInput.files[0]);
-    formData.append("title", titleInput.value);
-    formData.append("price", priceInput.value);
+    formData.append("title", title);
+    formData.append("price", price);
 
-    const response = await fetch(`${API_BASE_URL}/items/upload`, { 
-        method: "POST",
+    let response = await fetch(`${API_BASE_URL}/items/upload`, {
+        method: 'POST',
         body: formData
     });
+    
     if (response.ok) {
         toastr.success("✅ Товар добавлен!");
+    } else if (response.status === 415) {
+        toastr.error(`❌ Неправильный формат файла.`);
     } else {
         toastr.error(`❌ Ошибка: ${response.error}`);
     }

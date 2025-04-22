@@ -43,7 +43,7 @@
             <input type="text" id="addTitle" required>
             <label>Цена (целое число):</label>
             <input type="number" id="addPrice" required>
-            <button type="button" onclick="uploadProduct()">Отправить</button>
+            <button type="button" id="uploadButton">Отправить</button>
         </form>
 
         <!-- Delete Item Form -->
@@ -52,7 +52,7 @@
             <label>ID товара:</label>
             <input type="text" id="deleteIdentifier" required placeholder="id или название">
             <input type="text" id="deleteReason" required placeholder="причина удаления">
-            <button type="button" onclick="deleteProduct()">Отправить</button>
+            <button type="button" id="deleteButton">Отправить</button>
         </form>
 
         <!-- Update Item Form -->
@@ -70,13 +70,13 @@
             <input type="text" id="updateSpecialOffer">
             <label>Новая скидка (%):</label>
             <input type="number" id="updateDiscount">
-            <button type="button" onclick="updateProduct()">Отправить</button>
+            <button type="button" id="updateButton">Отправить</button>
         </form>
 
         <!-- Get All Items Form -->
         <form id="getForm" class="admin-form hidden">
             <h2>Список товаров</h2>
-            <button type="button" onclick="getAllProducts()">Получить список</button>
+            <button type="button" id="getAllButton">Получить список</button>
             <ul id="productList"></ul>
         </form>
     </main>

@@ -1,5 +1,5 @@
 
-import { IsNotEmpty, IsNumber, Min, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, Min, IsString, IsUrl } from 'class-validator';
 
 export class UploadItemDto {
   @IsString({message: 'должно быть строкой!'})
@@ -9,4 +9,8 @@ export class UploadItemDto {
   @IsNumber({}, { message: 'Цена должна быть числом!' })
   @Min(1, { message: 'Цена должна быть положительным числом!' })
   readonly price: number;
+
+  @IsString()
+  @IsNotEmpty()
+  readonly imageUrl: string
 }

@@ -17,6 +17,8 @@ import { PostsModule } from './posts/posts.module';
 import { AuthorsModule } from './authors/authors.module';
 import { Post } from './posts/post.entity';
 import { Author } from './authors/author.entity';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 
 @Module({
   controllers: [AppController],
@@ -35,6 +37,7 @@ import { Author } from './authors/author.entity';
       database: process.env.POSTGRES_DB,
       ssl: true,
       entities: [User, Role, Item, Purchase, Post, Author],
+      // entities: [User, Role, Item, Purchase],
       synchronize: false,
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
       migrationsRun: false,
@@ -45,11 +48,12 @@ import { Author } from './authors/author.entity';
     ItemsModule,
     PurchaseModule,
     DatabaseModule,
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
-    //   autoSchemaFile: true,
-    // }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
+      autoSchemaFile: true,
+      // graphiql: true,
+    }),
     PostsModule,
     AuthorsModule,
   ]

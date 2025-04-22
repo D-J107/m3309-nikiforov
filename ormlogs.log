@@ -135,3 +135,30 @@
 [2025-04-16T12:07:30.596Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744805212721,"SchemaUpdate1744805212721"]
 [2025-04-16T12:07:30.719Z]Migration SchemaUpdate1744805212721 has been  executed successfully.
 [2025-04-16T12:07:30.720Z][QUERY]: COMMIT
+[2025-04-16T18:17:55.068Z][QUERY]: SELECT * FROM current_schema()
+[2025-04-16T18:17:56.023Z][QUERY]: SELECT version();
+[2025-04-16T18:17:56.190Z][QUERY]: SELECT * FROM "information_schema"."tables" WHERE "table_schema" = 'public' AND "table_name" = 'migrations'
+[2025-04-16T18:17:56.311Z][QUERY]: CREATE TABLE "migrations" ("id" SERIAL NOT NULL, "timestamp" bigint NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_8c82d7f526340ab734260ea46be" PRIMARY KEY ("id"))
+[2025-04-16T18:17:56.454Z][QUERY]: SELECT * FROM "migrations" "migrations" ORDER BY "id" DESC
+[2025-04-16T18:17:56.603Z]0 migrations are already loaded in the database.
+[2025-04-16T18:17:56.604Z]1 migrations were found in the source code.
+[2025-04-16T18:17:56.604Z]1 migrations are new migrations must be executed.
+[2025-04-16T18:17:56.605Z][QUERY]: START TRANSACTION
+[2025-04-16T18:17:56.806Z][QUERY]: CREATE TABLE "roles" ("id" SERIAL NOT NULL, "value" character varying NOT NULL, "description" character varying NOT NULL, CONSTRAINT "UQ_bb7d685810f5cba57e9ff6756fb" UNIQUE ("value"), CONSTRAINT "PK_c1433d71a4838793a49dcad46ab" PRIMARY KEY ("id"))
+[2025-04-16T18:17:56.933Z][QUERY]: CREATE TABLE "users" ("id" SERIAL NOT NULL, "username" character varying NOT NULL, "password" character varying NOT NULL, "email" character varying NOT NULL, "balance" integer NOT NULL DEFAULT '3000', CONSTRAINT "UQ_97672ac88f789774dd47f7c8be3" UNIQUE ("email"), CONSTRAINT "PK_a3ffb1c0c8416b9fc6f907b7433" PRIMARY KEY ("id"))
+[2025-04-16T18:17:57.060Z][QUERY]: CREATE TABLE "purchases" ("id" SERIAL NOT NULL, "purchaseDate" TIMESTAMP NOT NULL DEFAULT now(), "user_id" integer NOT NULL, "item_id" integer, CONSTRAINT "REL_1064c04bd5a56289865700b240" UNIQUE ("item_id"), CONSTRAINT "PK_1d55032f37a34c6eceacbbca6b8" PRIMARY KEY ("id"))
+[2025-04-16T18:17:57.216Z][QUERY]: CREATE TABLE "items" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "price" integer NOT NULL, "imagePath" character varying NOT NULL, "specialOffer" character varying, "discount" integer, "purchase_id" integer, CONSTRAINT "REL_e2209f147ec1ee1396c7ed854b" UNIQUE ("purchase_id"), CONSTRAINT "PK_ba5885359424c15ca6b9e79bcf6" PRIMARY KEY ("id"))
+[2025-04-16T18:17:57.539Z][QUERY]: CREATE TABLE "authors" ("id" SERIAL NOT NULL, "name" character varying NOT NULL, CONSTRAINT "PK_d2ed02fabd9b52847ccb85e6b88" PRIMARY KEY ("id"))
+[2025-04-16T18:17:57.663Z][QUERY]: CREATE TABLE "posts" ("id" SERIAL NOT NULL, "title" character varying NOT NULL, "content" character varying, "authorId" integer NOT NULL, CONSTRAINT "PK_2829ac61eff60fcec60d7274b9e" PRIMARY KEY ("id"))
+[2025-04-16T18:17:57.788Z][QUERY]: CREATE TABLE "user_roles" ("user_id" integer NOT NULL, "role_id" integer NOT NULL, CONSTRAINT "PK_23ed6f04fe43066df08379fd034" PRIMARY KEY ("user_id", "role_id"))
+[2025-04-16T18:17:57.935Z][QUERY]: CREATE INDEX "IDX_87b8888186ca9769c960e92687" ON "user_roles" ("user_id") 
+[2025-04-16T18:17:58.053Z][QUERY]: CREATE INDEX "IDX_b23c65e50a758245a33ee35fda" ON "user_roles" ("role_id") 
+[2025-04-16T18:17:58.179Z][QUERY]: ALTER TABLE "purchases" ADD CONSTRAINT "FK_024ddf7e04177a07fcb9806a90a" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-16T18:17:58.464Z][QUERY]: ALTER TABLE "purchases" ADD CONSTRAINT "FK_1064c04bd5a56289865700b2403" FOREIGN KEY ("item_id") REFERENCES "items"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-16T18:17:58.580Z][QUERY]: ALTER TABLE "items" ADD CONSTRAINT "FK_e2209f147ec1ee1396c7ed854b2" FOREIGN KEY ("purchase_id") REFERENCES "purchases"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-16T18:17:58.697Z][QUERY]: ALTER TABLE "posts" ADD CONSTRAINT "FK_c5a322ad12a7bf95460c958e80e" FOREIGN KEY ("authorId") REFERENCES "authors"("id") ON DELETE CASCADE ON UPDATE NO ACTION
+[2025-04-16T18:17:58.814Z][QUERY]: ALTER TABLE "user_roles" ADD CONSTRAINT "FK_87b8888186ca9769c960e926870" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE
+[2025-04-16T18:17:58.967Z][QUERY]: ALTER TABLE "user_roles" ADD CONSTRAINT "FK_b23c65e50a758245a33ee35fda1" FOREIGN KEY ("role_id") REFERENCES "roles"("id") ON DELETE NO ACTION ON UPDATE NO ACTION
+[2025-04-16T18:17:59.089Z][QUERY]: INSERT INTO "migrations"("timestamp", "name") VALUES ($1, $2) -- PARAMETERS: [1744827450067,"SchemaUpdate1744827450067"]
+[2025-04-16T18:17:59.211Z]Migration SchemaUpdate1744827450067 has been  executed successfully.
+[2025-04-16T18:17:59.212Z][QUERY]: COMMIT

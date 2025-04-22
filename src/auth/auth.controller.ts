@@ -2,8 +2,9 @@ import { Body, Controller, HttpStatus, NotFoundException, Post, Res, Unauthorize
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
-import { Response } from 'express';
 import { ApiTags } from '@nestjs/swagger';
+import { Request, Response } from 'express';
+
 
 @ApiTags('Авторизация')
 @Controller('auth')
@@ -18,10 +19,10 @@ export class AuthController {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            maxAge: 24 * 60 * 60 * 1000 // 1 day,
         });
 
-        return res.status(HttpStatus.CREATED).json({ username });
+        return res.status(HttpStatus.CREATED).json({username});
     }
 
     @Post('/login')
@@ -31,11 +32,10 @@ export class AuthController {
         res.cookie('token', token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            maxAge: 24 * 60 * 60 * 1000, // 1 day
+            maxAge: 24 * 60 * 60 * 1000 // 1 day,
         });
-        // теперь не возвращаем токен в ответе как было раньше а храним его в куки
-        // и возвращаем ток юзернейм
-        return res.status(HttpStatus.OK).json({ username });
+
+        return res.status(HttpStatus.CREATED).json({username});
     }
 
     @Post('/validate-password')
@@ -50,11 +50,8 @@ export class AuthController {
 
     @Post('/logout')
     async logout(@Res() res: Response) {
-        res.cookie('token', '', {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            expires: new Date(0)
-        });
-        return res.status(HttpStatus.OK).json({ message: 'Logged out'});
+        res.clearCookie('token')
+        .status(200)
+        .send({ message: 'Logged out' });
     }
 }

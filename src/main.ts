@@ -12,10 +12,13 @@ import * as jwt from 'jsonwebtoken';
 import * as cookieParser from 'cookie-parser';
 import { PreconditionFailedException } from '@nestjs/common';
 
+
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule
   );
+
+  console.log("main.ts env pg_db:",process.env.POSTGRES_DB);
 
   const config = new DocumentBuilder()
     .setTitle('Фиш маркет')

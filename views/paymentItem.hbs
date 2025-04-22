@@ -15,7 +15,7 @@
   <script src="/scripts/composeMenu.js" defer></script>
   <script src="/scripts/loginRegister.js" defer></script>
 
-  <script>
+  <script nonce="{{nonce}}">
     window.currentUser = {{{json user}}}; // сериализуем юзера в глобальную переменную
   </script>
   <script src="/scripts/payment.js" defer></script>
@@ -32,7 +32,7 @@
     <h1>Оплата товара</h1>
 
     <div class="product-info">
-      <img src="/webp-images/{{item.imagePath}}" alt="{{item.title}}" style="width:200px;">
+      <img crossorigin="anonymous" src={{item.imagePath}} alt="{{item.title}}" style="width:200px;">
       <h2>{{item.title}}</h2>
       <p>Цена: {{item.price}} руб/кг</p>
       {{#if item.specialOffer}}

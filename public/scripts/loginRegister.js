@@ -214,4 +214,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
     checkSession(); // проверяем наличие сессии после загрузки страницы
 });
-
