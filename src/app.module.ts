@@ -19,6 +19,7 @@ import { Post } from './posts/post.entity';
 import { Author } from './authors/author.entity';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import {join} from 'path';
 
 @Module({
   controllers: [AppController],
