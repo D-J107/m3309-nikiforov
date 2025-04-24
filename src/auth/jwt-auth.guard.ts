@@ -11,6 +11,7 @@ export class JwtAuthGuard implements CanActivate {
         const req = context.switchToHttp().getRequest();
         try {
             const token = req.cookies.token;
+            console.log("jwt-auth.guard.ts token:",token);
             if (!token) {
                 throw new UnauthorizedException({message: 'Пользователь не авторизован'});
             }

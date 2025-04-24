@@ -1,10 +1,13 @@
-import { Controller, Post, Get, Param, Body } from '@nestjs/common';
+import { Controller, Post, Get, Param, Body, UseInterceptors } from '@nestjs/common';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { PurchaseService } from './purchase.service';
 import { CreatePurchaseDto } from './dto/create-purchase.dto';
 import { Purchase } from './purchase.model';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import { LoggingInterceptor } from 'src/interceptors/logginInterceptor';
 
 @ApiTags('Покупки')
+@UseInterceptors(CacheInterceptor, LoggingInterceptor)
 @Controller('purchases')
 export class PurchaseController {
     constructor(private readonly purchaseService: PurchaseService) {}

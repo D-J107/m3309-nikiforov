@@ -2,6 +2,10 @@
     <div class="main">
         <h1 class="Title">Фиш Маркет</h1>
 
+        {{#if elapsedTime}}
+            <div class="elapsed-time">Время отклика: {{elapsedTime}}</div>
+        {{/if}}
+
         <div class="div-login-register">
             <button id = "login-show">Логин</button>
             <div id="login-modal">

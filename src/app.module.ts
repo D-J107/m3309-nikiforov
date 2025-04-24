@@ -19,12 +19,19 @@ import { Post } from './posts/post.entity';
 import { Author } from './authors/author.entity';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import {join} from 'path';
+import { join } from 'path';
+import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ComplexityPlugin } from './customTypes/GqlComplexityPlugin';
 
 @Module({
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService, 
+    ComplexityPlugin
+  ],
   imports: [
+    CacheModule.register({ttl: 60, isGlobal: true}),
     DatabaseModule,
     ConfigModule.forRoot({
       envFilePath: `.${process.env.NODE_ENV}.env`
@@ -38,7 +45,6 @@ import {join} from 'path';
       database: process.env.POSTGRES_DB,
       ssl: true,
       entities: [User, Role, Item, Purchase, Post, Author],
-      // entities: [User, Role, Item, Purchase],
       synchronize: false,
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
       migrationsRun: false,
@@ -52,8 +58,7 @@ import {join} from 'path';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       playground: (process.env.GRAPHQL_PLAYGROUND === 'true'),
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      // graphiql: true,
+      autoSchemaFile: join(process.cwd(), 'schema.gql'),
     }),
     PostsModule,
     AuthorsModule,

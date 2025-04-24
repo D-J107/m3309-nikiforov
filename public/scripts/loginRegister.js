@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // console.log("loginRegister.js login data.username:",data.username);
                 // console.log("loginRegister.js login JSON.stringify(data.username):",JSON.stringify(data.username));
 
-                if (response.status === 200) {
+                if (response.status === 201) {
                     handleSuccessfullAction(loginModal, "Successfully logged in.");
                     hideLogRegButtonsAndShowAuthorized(data.username);
                     localStorage.setItem("username", JSON.stringify(data.username));

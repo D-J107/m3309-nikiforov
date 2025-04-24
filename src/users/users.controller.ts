@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Put, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { User } from './users.model';
@@ -9,8 +9,11 @@ import { Roles } from 'src/auth/roles-auth.decorator';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { Request } from 'express';
 import { UserJwtPayload } from 'src/customTypes/userJwtPayload';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import { LoggingInterceptor } from 'src/interceptors/logginInterceptor';
 
 @ApiTags('Пользователи')
+@UseInterceptors(CacheInterceptor, LoggingInterceptor)
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}

@@ -9,8 +9,11 @@ import { UpdateItemDto } from './dto/update-item.dto';
 import { Observable, Subject } from 'rxjs';
 import { MessageEvent } from '@nestjs/common';
 import { map } from 'rxjs/operators';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import { LoggingInterceptor } from 'src/interceptors/logginInterceptor';
 
 @ApiTags('Товары')
+@UseInterceptors(CacheInterceptor, LoggingInterceptor)
 @Controller('items')
 export class ItemsController {
     constructor(private itemsService: ItemsService)

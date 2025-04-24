@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { Item } from './items.model';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -7,13 +7,19 @@ import * as fs from 'fs';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { CloudinaryService } from 'src/database/cloudinary.service';
 import { Purchase } from 'src/purchase/purchase.model';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class ItemsService implements OnModuleInit{
+    private readonly ALL_ITEMS_KEY = 'items:all';
+    private readonly ITEM_KEY_PREFIX = 'items:id:';
+
     constructor(
         @InjectRepository(Item) private itemRepository: Repository<Item>,
-        private cloudinaryService: CloudinaryService)
-    {}
+        private readonly cloudinaryService: CloudinaryService,
+        @Inject(CACHE_MANAGER) private readonly cacheManager: Cache,
+    ) {}
 
     async saveFile(file: Express.Multer.File): Promise<string> {
         if (!file) {
@@ -34,10 +40,21 @@ export class ItemsService implements OnModuleInit{
             specialOffer,
             discount
         });
-        return await this.itemRepository.save(item);
+        const saved = await this.itemRepository.save(item);
+        // делаем кэш невалидным тк он неверный тк добавили новый айтем
+        await this.cacheManager.del(this.ALL_ITEMS_KEY);
+        // но для конкретного предмета кэш обновляем
+        await this.cacheManager.set(this.ITEM_KEY_PREFIX + saved.id, saved);
+        return saved;
     }
 
     async getAll() {
+        const cached: Item[] | null = await this.cacheManager.get(this.ALL_ITEMS_KEY);
+        if (cached) {
+            console.log('items getAll: returned from cache');
+            return cached;
+        }
+
         const items = await this.itemRepository.find({
             relations: ['purchase']
         });
@@ -56,11 +73,25 @@ export class ItemsService implements OnModuleInit{
             }
             return 0;
         }
-        return itemsForHtmlOutput.sort(compare);
+        const output = itemsForHtmlOutput.sort(compare);
+        await this.cacheManager.set(this.ALL_ITEMS_KEY, output);
+        return output;
     }
     async getById(id: number) {
-        return await this.itemRepository.findOneBy({id});
+        const key = this.ITEM_KEY_PREFIX + id;
+
+        const cached: Item | null = await this.cacheManager.get(key);
+        if (cached) {
+            console.log(`items service getById ${id} returned from cache`)
+            return cached;
+        }
+
+
+        const item = await this.itemRepository.findOneBy({id});
+        await this.cacheManager.set(key, item);
+        return item;
     }
+
     async getByTitle(title: string) {
         return await this.itemRepository.findOneBy({title});
     }
@@ -95,6 +126,10 @@ export class ItemsService implements OnModuleInit{
         const newItem = await this.itemRepository.findOneBy({ id });
         const previousTitle = item.title;
 
+        // поскольку хотя бы 1 предмет обновился то предыдущий кэш не актуален
+        await this.cacheManager.del(this.ALL_ITEMS_KEY);
+        await this.cacheManager.del(this.ITEM_KEY_PREFIX + id);
+
         return { newItem, previousTitle };
     }
 
@@ -104,7 +139,12 @@ export class ItemsService implements OnModuleInit{
             throw new NotFoundException(`Предмет с айди ${itemId} для покупки не найден!`);
         }
         item.purchase = purchase;
-        this.itemRepository.update(itemId, item);
+        await this.itemRepository.update(itemId, item);
+
+        this.cacheManager.del(this.ALL_ITEMS_KEY)
+        this.cacheManager.del(this.ITEM_KEY_PREFIX + itemId);
+
+        return item
     }
 
     async deleteById(id: number) {
@@ -113,6 +153,10 @@ export class ItemsService implements OnModuleInit{
             throw new NotFoundException(`Предмет с айди ${id} не найдена`);
         }
         await this.itemRepository.delete({id});
+
+        this.cacheManager.del(this.ALL_ITEMS_KEY)
+        this.cacheManager.del(this.ITEM_KEY_PREFIX + id)
+
         return item;
     }
 
@@ -122,6 +166,10 @@ export class ItemsService implements OnModuleInit{
             throw new NotFoundException(`Предмет с названием ${title} не найден!`);
         }
         await this.itemRepository.delete({title});
+
+        this.cacheManager.del(this.ALL_ITEMS_KEY)
+        this.cacheManager.del(this.ITEM_KEY_PREFIX + item.id)
+
         return item;
     }
     
@@ -232,7 +280,10 @@ export class ItemsService implements OnModuleInit{
                     console.log("❌ items.service.ts ensureBaseStuffExists err:", err);
                     continue;
                 }
-                await this.itemRepository.save(item);
+                const saved = await this.itemRepository.save(item);
+
+                this.cacheManager.del(this.ALL_ITEMS_KEY)
+                this.cacheManager.set(this.ITEM_KEY_PREFIX + saved.id, saved)
             }
         }
         console.log("✅ Base stuff added to store DB.")

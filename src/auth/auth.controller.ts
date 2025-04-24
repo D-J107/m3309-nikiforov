@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, NotFoundException, Post, Res, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, NotFoundException, Post, Res, UnauthorizedException } from '@nestjs/common';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LoginUserDto } from 'src/users/dto/login-user.dto';
@@ -25,9 +25,12 @@ export class AuthController {
         return res.status(HttpStatus.CREATED).json({username});
     }
 
+    @HttpCode(HttpStatus.CREATED)
     @Post('/login')
     async login(@Body() dto: LoginUserDto, @Res() res: Response) {
         const {username, token} = await this.authService.login(dto);
+        console.log("auth.controller.ts username:",username);
+        console.log("auth.controller.ts token:",token);
 
         res.cookie('token', token, {
             httpOnly: true,
@@ -36,6 +39,7 @@ export class AuthController {
         });
 
         return res.status(HttpStatus.CREATED).json({username});
+        // return {username};
     }
 
     @Post('/validate-password')

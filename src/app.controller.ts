@@ -1,4 +1,4 @@
-import { Controller, Get, HttpException, HttpStatus, NotFoundException, Param, Render, Req, UseGuards, } from '@nestjs/common';
+import { Controller, Get, HttpException, HttpStatus, NotFoundException, Param, Render, Req, UseGuards, UseInterceptors, } from '@nestjs/common';
 
 import {Request} from 'express';
 import { ItemsService } from './items/items.service';
@@ -6,9 +6,11 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { RolesGuard } from './auth/roles.guard';
 import { Roles } from './auth/roles-auth.decorator';
 import { UsersService } from './users/users.service';
+import { CacheInterceptor } from '@nestjs/cache-manager';
+import { LoggingInterceptor } from './interceptors/logginInterceptor';
 
 
-
+@UseInterceptors(CacheInterceptor, LoggingInterceptor)
 @Controller()
 export class AppController {
   constructor(
@@ -37,6 +39,7 @@ export class AppController {
       throw new HttpException("Произошла ошибка сервера!", HttpStatus.INTERNAL_SERVER_ERROR);
     }
     const user = await this.usersService.getUserById(req.userId);
+    console.log("app.controller.ts user:",user);
     return { user: req.user, username: user?.username, balance: user?.balance };
   }
 
@@ -48,6 +51,7 @@ export class AppController {
 
   @Get('/payment/:id')
   @Render('paymentItem')
+  @UseGuards(JwtAuthGuard)
   async paymentForItem(@Param('id') id: number, @Req() req: Request) {
     const item = await this.itemsService.getById(id);
     if (!item) {

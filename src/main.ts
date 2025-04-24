@@ -11,12 +11,27 @@ import {Request, Response} from 'express';
 import * as jwt from 'jsonwebtoken';
 import * as cookieParser from 'cookie-parser';
 import { PreconditionFailedException } from '@nestjs/common';
+import { LoggingInterceptor } from './interceptors/logginInterceptor';
 
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(
     AppModule
   );
+
+  app.set('etag', 'weak');
+  // middleware for cache-control
+  app.use((req, res, next) => {
+    if (req.method === 'GET' && req.accepts(['html', 'json']) === 'html') {
+      res.setHeader('Cache-Control', 'public, max-age=60, must-revalidate')
+    }
+    next();
+  })
+
+  // команда для тестирования в линукс
+  // curl -si http://$(hostname).local:3000 | grep ETag | awk '{print $2}' | tr -d $'\r'
+  // ETAG=$(curl -si http://$(hostname).local:3000 | grep ETag | awk '{print $2}' | tr -d $'\r')
+  // hey -n 100 -c 10 -H "If-None-Match: $ETAG" http://($hostname).local:3000/catalogue
 
   console.log("main.ts env pg_db:",process.env.POSTGRES_DB);
 
@@ -119,3 +134,25 @@ bootstrap();
 // Для генерации ER-диаграммы нужно ввести следующие команды:
 // npm run generate:erd
 // npm run generate:erd:svg
+
+
+/*
+mutation {
+  createAuthor(input: {name: "ABB3"}) {
+    id
+    name
+  }
+}
+
+query {
+  author(id: 1) {
+    id
+    name
+    posts {
+      id
+      title
+      content
+    }
+  }
+}
+*/

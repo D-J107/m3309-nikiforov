@@ -53,6 +53,7 @@ export class AuthService {
 
     private async validateUser(dto: LoginUserDto) {
         const user = await this.usersService.getUserByEmail(dto.email);
+        console.log("auth.service.ts validateUser user:",user);
         if (!user) {
            throw new HttpException("Нет пользователя с таким email или паролем!", HttpStatus.BAD_REQUEST);
         }

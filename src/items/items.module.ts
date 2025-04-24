@@ -6,11 +6,16 @@ import { Item } from './items.model';
 import { AuthModule } from 'src/auth/auth.module';
 import { CloudinaryService } from 'src/database/cloudinary.service';
 import { DatabaseModule } from 'src/database/database.module';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Module({
   providers: [ItemsService],
   controllers: [ItemsController],
   imports: [
+    CacheModule.register({
+      ttl: 60,
+      max: 100, // макс число предметов в кэше
+    }),
     TypeOrmModule.forFeature([Item]),
     AuthModule,
     DatabaseModule
