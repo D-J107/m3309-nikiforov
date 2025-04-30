@@ -8,8 +8,9 @@ import { Roles } from './auth/roles-auth.decorator';
 import { UsersService } from './users/users.service';
 import { CacheInterceptor } from '@nestjs/cache-manager';
 import { LoggingInterceptor } from './interceptors/logginInterceptor';
+import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
-
+@ApiTags('Общее')
 @UseInterceptors(CacheInterceptor, LoggingInterceptor)
 @Controller()
 export class AppController {
@@ -34,6 +35,10 @@ export class AppController {
   @Get('/personal_account')
   @Render('personal_account')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('cookieAuth')
+  @ApiOperation({ summary: 'Личный кабинет пользователя'})
+  @ApiResponse({ status: 200, description: 'Страница личного кабинета пользователя'})
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован'})
   async personal_account(@Req() req : Request) {
     if (!req.userId) {
       throw new HttpException("Произошла ошибка сервера!", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,6 +57,10 @@ export class AppController {
   @Get('/payment/:id')
   @Render('paymentItem')
   @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth('cookieAuth')
+  @ApiOperation({ summary: 'Оплата конкретного товара'})
+  @ApiResponse({ status: 200, description: 'Страница оплаты товара пользователем'})
+  @ApiResponse({ status: 401, description: 'Пользователь не авторизован'})
   async paymentForItem(@Param('id') id: number, @Req() req: Request) {
     const item = await this.itemsService.getById(id);
     if (!item) {
@@ -96,10 +105,15 @@ export class AppController {
     return { user: req.user };
   }
 
-  @Roles("ADMIN")
-  @UseGuards(RolesGuard)
   @Get('/administration')
   @Render('administration')
+  @Roles("ADMIN")
+  @UseGuards(RolesGuard)
+  @ApiBearerAuth('cookieAuth')
+  @ApiOperation({ summary: 'Администрирование'})
+  @ApiResponse({ status: 200, description: 'Страница администратора для управления сайтом'})
+  @ApiResponse({status: 401, description: 'Пользователь не авторизован'})
+  @ApiResponse({status: 403, description: 'Пользователь не является администратором'})
   administration(@Req() req : Request) {
     return { user: req.user };
   }

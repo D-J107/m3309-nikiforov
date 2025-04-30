@@ -55,9 +55,12 @@ export class PurchaseService {
     }
 
     async getPurchasesByUser(userId: number): Promise<Purchase[]> {
-        return await this.purchaseRepository.find({
-            where: { user: { id: userId } },
-        });
+      if (await this.usersService.getUserById(userId) === null) {
+        throw new NotFoundException('Пользователь не найден!')
+      }
+      return await this.purchaseRepository.find({
+          where: { user: { id: userId } },
+      });
     }
 
     async getAllPurchases(): Promise<Purchase[]> {

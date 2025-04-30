@@ -5,18 +5,25 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn
 
 @Entity('purchases')
 export class Purchase {
+    @ApiProperty({ example: 1, description: 'Уникальный идентификатор покупки'})
     @PrimaryGeneratedColumn()
     id: number;
 
+    @ApiProperty({ type: () => User, description: 'Пользователь, совершивший покупку' })
     @ManyToOne(() => User, (user) => user.purchases, {nullable: false, onDelete: 'CASCADE'})
     @JoinColumn({ name: 'user_id'})
     user: User;
 
+    @ApiProperty({ type: () => Item, description: 'Приобретённый предмет' })
     @OneToOne(() => Item)
     @JoinColumn({ name: 'item_id'})
     item: Item;
 
-    @ApiProperty({example: '01.04.2025', description: 'Дата покупки предметов пользователем'})
+    @ApiProperty({  example: new Date().toISOString(),
+                    description: 'Дата покупки предметов пользователем',
+                    type: String, 
+                    format: 'date-time'
+    })
     @Column({type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     purchaseDate: Date;
 }

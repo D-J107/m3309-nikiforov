@@ -21,10 +21,16 @@ export class RolesService implements OnModuleInit {
     }
 
     async getById(id: number) {
+        if (await this.roleRepository.findOneBy({id}) === null) {
+            throw new NotFoundException(`Роль с айди ${id} не найдена!`);
+        }
         return await this.roleRepository.findOneBy({id});
     }
 
     async getByValue(value: string) {
+        if (await this.roleRepository.findOneBy({value}) === null) {
+            throw new NotFoundException(`Роль с значением ${value} не найдена!`);
+        }
         return await this.roleRepository.findOneBy({value});
     }
 

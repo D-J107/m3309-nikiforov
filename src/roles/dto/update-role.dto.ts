@@ -3,11 +3,11 @@ import { IsString } from "class-validator";
 
 
 export class UpdateRoleDto {
-    @ApiProperty({example: 'MANAGER', description: 'новое значение роли'})
+    @ApiProperty({example: 'MANAGER', description: 'Новое значение роли'})
     @IsString({message: 'Должно быть строкой!'})
     value: string;
 
-    @ApiProperty({example: 'Управляющий персоналом магазина', description: 'Описание роли'})
+    @ApiProperty({example: 'Управляющий персоналом магазина', description: 'Новое описание роли'})
     @IsString({message: 'Должно быть строкой!'})
     description: string
 }

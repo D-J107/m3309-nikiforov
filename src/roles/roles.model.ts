@@ -1,9 +1,10 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { User } from "src/users/users.model";
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("roles")
 export class Role {
+    @ApiProperty({ example: 1, description: 'Уникальный идентификатор роли' })
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -15,6 +16,11 @@ export class Role {
     @Column({nullable: false})
     description: string;
 
+    @ApiPropertyOptional({
+        type: () => [User],
+        description: 'Пользователи, имеющие данную роль',
+        isArray: true,
+    })
     @ManyToMany(() => User, (user) => user.roles)
     users: User[];
 }

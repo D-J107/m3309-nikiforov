@@ -1,10 +1,11 @@
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Purchase } from "src/purchase/purchase.model";
 import { Role } from "src/roles/roles.model";
 import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("users")
 export class User {
+    @ApiProperty({ example: 1, description: 'Уникальный идентификатор пользователя' })
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -16,7 +17,7 @@ export class User {
     @Column({nullable: false})
     password: string;
 
-    @ApiProperty({example: 'Почта', description: 'Почтовый адрес'})
+    @ApiProperty({example: 'usr1@mail.com', description: 'Почтовый адрес'})
     @Column({unique: true, nullable: false})
     email: string;
 
@@ -24,6 +25,11 @@ export class User {
     @Column({unique: false, nullable: false, default: 3000})
     balance: number;
 
+    @ApiPropertyOptional({
+        type: () => [Role],
+        description: 'Роли пользователя',
+        isArray: true
+    })
     @ManyToMany(() => Role, (role) => role.users, { cascade: true})
     @JoinTable({
         name: "user_roles",
@@ -38,6 +44,11 @@ export class User {
     })
     roles: Role[];
 
+    @ApiPropertyOptional({
+        type: () => [Purchase],
+        description: 'Покупки, совершенные пользователем',
+        isArray: true
+    })
     @OneToMany(() => Purchase, (purchase) => purchase.user)
     purchases: Purchase[];
 };

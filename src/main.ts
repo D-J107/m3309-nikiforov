@@ -29,9 +29,10 @@ async function bootstrap() {
   })
 
   // команда для тестирования в линукс
-  // curl -si http://$(hostname).local:3000 | grep ETag | awk '{print $2}' | tr -d $'\r'
   // ETAG=$(curl -si http://$(hostname).local:3000 | grep ETag | awk '{print $2}' | tr -d $'\r')
   // hey -n 100 -c 10 -H "If-None-Match: $ETAG" http://($hostname).local:3000/catalogue
+
+  // # curl -si http://$(hostname).local:3000 | grep ETag | awk '{print $2}' | tr -d $'\r'
 
   console.log("main.ts env pg_db:",process.env.POSTGRES_DB);
 
@@ -40,6 +41,11 @@ async function bootstrap() {
     .setDescription('Документация Rest Api')
     .setVersion('1.0.0')
     .addTag('Nikiforov m3309')
+    .addCookieAuth('token', {
+      type: 'apiKey',
+      in: 'cookie',
+      description: 'JWT-токен, выставляется в cookie с названием token',
+    }, 'cookieAuth')
     .build()
   const document = SwaggerModule.createDocument(app, config)
   SwaggerModule.setup('/api/docs', app, document);

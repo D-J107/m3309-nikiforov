@@ -88,11 +88,18 @@ export class ItemsService implements OnModuleInit{
 
 
         const item = await this.itemRepository.findOneBy({id});
+        if (!item === null) {
+            throw new NotFoundException(`Предмет с айди ${id} не найден!`)
+        }
+
         await this.cacheManager.set(key, item);
         return item;
     }
 
     async getByTitle(title: string) {
+        if (await this.itemRepository.findOneBy({title}) === null) {
+            throw new NotFoundException(`Предмет с названием ${title} не найден!`)
+        }
         return await this.itemRepository.findOneBy({title});
     }
     
